@@ -1,0 +1,76 @@
+$amount-color: color('white') !default;
+$amount-font-family: $ui-font-family !default;
+$amount-font-weight: normal !default;
+$amount-font-size: map-get($font-sizes, 'normal') !default;
+$amount-small-font-size: map-get($font-sizes, 'small') !default;
+$amount-medium-font-size: map-get($font-sizes, 'normal') !default;
+$amount-large-font-size: map-get($font-sizes, 'large') !default;
+$amount-huge-font-size: map-get($font-sizes, 'h2') !default;
+
+
+.#{$namespace}-amount {
+  display: inline-flex;
+  align-items: center;
+  font-size: $amount-font-size;
+  font-weight: $amount-font-weight;
+  font-family: $amount-font-family;
+  color: $amount-color;
+
+
+  & &__value {
+    font-weight: inherit;
+    color: inherit;
+  }
+
+  &--left {
+    .#{$namespace}-amount__sign,
+    .#{$namespace}-amount__icon {
+      order: 1;
+      margin-right: 1ex;
+    }
+
+    .#{$namespace}-amount__value {
+      order: 2;
+    }
+  }
+
+  &--right {
+    .#{$namespace}-amount__value {
+      order: 1;
+    }
+
+    .#{$namespace}-amount__sign,
+    .#{$namespace}-amount__icon {
+      order: 2;
+      margin-left: 1ex;
+    }
+  }
+
+
+  &--small {
+    .#{$namespace}-amount__value {
+      font-size: $amount-small-font-size;
+    }
+  }
+
+
+  &--medium {
+    .#{$namespace}-amount__value {
+      font-size: $amount-medium-font-size;
+    }
+  }
+
+
+  &--large {
+    .#{$namespace}-amount__value {
+      font-size: $amount-large-font-size;
+    }
+  }
+
+
+  &--huge {
+    .#{$namespace}-amount__value {
+      font-size: $amount-huge-font-size;
+    }
+  }
+}

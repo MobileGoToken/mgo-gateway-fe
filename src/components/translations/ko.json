@@ -1,0 +1,15 @@
+{
+  "signIn": "로그인",
+  "noInvoiceData": "송장 데이터 없음",
+  "copyClipboard": "주소 복사하기",
+  "totalBalance": "총 잔액",
+  "numberOfAddresses": "주소 갯수",
+  "address": "주소",
+  "mnemonic_text": "지갑에 접속하려면 복구단어을 올바른 순서대로 입력해주세요.",
+  "mnemonic_invalid": "올바르지 않은 복구단어 입니다.",
+  "validatorsRequired": "필수",
+  "english": "English",
+  "russian": "Русский",
+  "chinese": "中文",
+  "korean": "한국어"
+}

@@ -1,0 +1,67 @@
+$switch-width: 32px !default;
+$switch-height: 20px !default;
+$switch-margin: rhythm((strip-unit($base-line-height) - strip-unit($switch-height)) / (2 * strip-unit($base-line-height))) 0 !default;
+$switch-padding: 0 !default;
+
+$switch-background: (
+  color: transparent,
+	image: svg-url('<svg width="33" height="18" xmlns="http://www.w3.org/2000/svg"><g fill="#{color('tertiary')}"><rect opacity=".2" x="7" y="2" width="25.2" height="14" rx="7"></rect><path opacity=".8" d="M9 0a9 9 0 0 0-9 9 9 9 0 1 0 9-9z"></path></g></svg>'),
+  size: 32px,
+  repeat: no-repeat,
+  position: center center
+) !default;
+
+$switch-checked-background: (
+	image: svg-url('<svg width="33" height="18" xmlns="http://www.w3.org/2000/svg"><g fill="#{color('green')}"><rect opacity=".4" y="2" width="25.2" height="14" rx="7"/><path d="M24 0a9 9 0 0 0-9 9 9 9 0 1 0 9-9z"/></g></svg>'),
+) !default;
+
+$switch-border: (
+  width: $default-rhythm-border-width,
+  style: $default-rhythm-border-style,
+  color: transparent,
+  radius: 10px
+) !default;
+
+$switch-hover-border: (
+  width: $default-rhythm-border-width,
+  style: $default-rhythm-border-style,
+  color: transparent
+) !default;
+
+$switch-transition: background-image 0.15s linear !default;
+
+
+.#{$namespace}-switch {
+  @include set-border($switch-border);
+  @include set-background($switch-background);
+
+  appearance: none;
+  display: inline-block;
+  width: $switch-width;
+  height: $switch-height;
+  margin: $switch-margin;
+  padding: $switch-padding;
+  cursor: pointer;
+  vertical-align: top;
+  line-height: $base-line-height;
+  border: 0;
+  transition: $switch-transition;
+
+  &:hover {
+    &:not(:focus),
+    &:not([disabled]),
+    &:not([aria-disabled='true']) {
+      @include set-border($switch-hover-border);
+
+      //box-shadow: $switch-hover-shadow;
+    }
+  }
+
+  &:checked {
+    @include set-background($switch-checked-background);
+  }
+
+  & + .#{$namespace}-label {
+    margin-left: 4px;
+  }
+}

@@ -1,0 +1,19 @@
+$html-img-border: none !default;
+$html-figcaption-font-size: map-get($font-sizes, 'small') !default;
+
+
+///
+/// Images
+///
+///
+img,
+figure {
+  margin: 0;
+  padding: 0;
+  border: $html-img-border;
+}
+
+
+figure > figcaption {
+  font-size: $html-figcaption-font-size;
+}

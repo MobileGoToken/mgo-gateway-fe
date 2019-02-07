@@ -1,0 +1,153 @@
+$label-font-family: $ui-font-family !default;
+$label-font-size: map-get($font-sizes, normal) !default;
+$label-font-weight: normal !default;
+$label-spacing: 12px !default;
+$label-spacing-small: 8px !default;
+$label-selected-font-weight: 300 !default;
+$label-color: map-get($text-colors, 'dark') !default;
+$label-color-togglable: map-get($text-colors, 'normal') !default;
+
+$label-inline-hint-padding: 0 0 0 28px !default;
+$label-inline-message-padding: 0 0 0 28px !default;
+
+$label-checkbox-hint-top: rhythm(1) !default;
+$label-checkbox-hint-padding: 0 0 0 26px !default;
+
+$label-switch-hint-top: rhythm(1) !default;
+$label-switch-hint-padding: 0 0 0 40px !default;
+
+
+.#{$namespace}-label {
+  margin: 0;
+  padding: 0;
+  font-family: $label-font-family;
+  font-size: $label-font-size;
+  font-weight: $label-font-weight;
+  color: $label-color;
+
+  &[disabled] [disabled] {
+    opacity: 1;
+  }
+
+  // add spacing to an input element after label
+  & + .#{$namespace}-span,
+  & + .#{$namespace}-label,
+  & + .#{$namespace}-select,
+  & + .#{$namespace}-textarea,
+  & + .#{$namespace}-input,
+  & + .#{$namespace}-password,
+  & + .#{$namespace}-search,
+  & + .#{$namespace}-radio,
+  & + .#{$namespace}-checkbox,
+  & + .#{$namespace}-switch {
+    margin-left: $label-spacing;
+  }
+
+  // if label contains an input element, add spacing to that element
+  > .#{$namespace}-select,
+  > .#{$namespace}-textarea,
+  > .#{$namespace}-input,
+  > .#{$namespace}-password,
+  > .#{$namespace}-search {
+    margin-left: $label-spacing;
+  }
+
+  // if there's a radio or a checkbox before the label, add spacing between
+  > .#{$namespace}-radio,
+  > .#{$namespace}-checkbox,
+  > .#{$namespace}-switch {
+    vertical-align: middle;
+
+    + .#{$namespace}-label__text,
+    + .#{$namespace}-input__hint + .#{$namespace}-label__text {
+      margin-left: $label-spacing-small;
+      color: $label-color-togglable;
+    }
+
+    &:checked + .#{$namespace}-label__text,
+    &:checked + .#{$namespace}-input__hint + .#{$namespace}-label__text {
+      font-weight: $label-selected-font-weight;
+    }
+
+    &[disabled] + .#{$namespace}-label__text,
+    &[disabled] + .#{$namespace}-input__hint + .#{$namespace}-label__text {
+      @extend %disabled;
+    }
+  }
+
+  > .#{$namespace}-checkbox,
+  > .#{$namespace}-switch {
+    &:indeterminate + .#{$namespace}-label__text,
+    &:indeterminate + .#{$namespace}-input__hint + .#{$namespace}-label__text {
+      font-weight: $label-selected-font-weight;
+    }
+  }
+
+  &--radio,
+  &--switch,
+  &--checkbox {
+
+  }
+}
+
+
+.#{$namespace}-label--full {
+  display: block;
+  width: 100%;
+}
+
+
+.#{$namespace}-label--inline {
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+
+  > .#{$namespace}-radio,
+  > .#{$namespace}-switch,
+  > .#{$namespace}-checkbox {
+    flex: 0 0 auto;
+  }
+
+  .#{$namespace}-input__group {
+    display: inline-block;
+
+    + .#{$namespace}-label__text {
+      margin-left: $label-spacing-small;
+    }
+  }
+
+  .#{$namespace}-input__hint {
+    order: 1;
+    width: 100%;
+    padding: $label-inline-hint-padding;
+  }
+
+  .#{$namespace}-input__message {
+    order: 2;
+    width: 100%;
+    padding: $label-inline-message-padding;
+  }
+}
+
+
+.#{$namespace}-label--checkbox {
+  .#{$namespace}-input__hint {
+    top: $label-checkbox-hint-top;
+    padding: $label-checkbox-hint-padding;
+  }
+}
+
+
+.#{$namespace}-label--switch {
+  .#{$namespace}-input__hint {
+    top: $label-switch-hint-top;
+    padding: $label-switch-hint-padding;
+  }
+}
+
+
+.#{$namespace}-label__text {
+  cursor: pointer;
+}

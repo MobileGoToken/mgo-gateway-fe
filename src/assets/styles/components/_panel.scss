@@ -1,0 +1,19 @@
+$panel-font-family: $ui-font-family !default;
+$panel-full-width: 100% !default;
+$header-shadow: color('smoke');
+$header-color: map-get($text-colors, bright);
+
+.#{$namespace}-panel {
+  font-family: $panel-font-family;
+
+  &__header {
+    font-size: map-get($font-sizes, huge);
+    margin-bottom: rhythm(.5);
+    color: $header-color;
+  }
+
+  &--full {
+    width: $panel-full-width;
+  }
+
+}

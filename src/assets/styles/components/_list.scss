@@ -1,0 +1,143 @@
+$html-list-margin: 0 0 $text-spacing 0 !default;
+$html-list-padding: 0 0 0 $indent-amount !default;
+$html-list-nested-padding: 0 0 0 2rem !default;
+$html-list-item-margin: 0 0 rhythm(1) 0 !default;
+
+$html-dfn-border: $default-rhythm-border-width $default-rhythm-border-style map-get($text-colors, normal) !default;
+
+$list-margin: 0 !default;
+$list-padding: 0 !default;
+$list-border: (
+  side: 'top',
+  width: 1px,
+  style: solid,
+  color: color('secondary', 'alpha', 30)
+) !default;
+
+$list-background: (
+  color: map-get($background-colors, 'window'),
+) !default;
+
+$list-stripped-background: (
+  color: color('secondary', 'alpha', 30),
+) !default;
+
+$list-header-height: rhythm(3) !default;
+$list-header-title-font-size: $h4-font-size !default;
+$list-header-title-font-weight: bold !default;
+$list-header-hint-width: 170px !default;
+$list-header-hint-margin: 0 0 0 auto !default;
+$list-header-hint-align: center !default;
+$list-header-hint-font-size: $h5-font-size !default;
+$list-header-hint-font-weight: 300 !default;
+$list-header-hint-color: map-get($text-colors, 'hover') !default;
+
+
+///
+/// Lists
+///
+///
+ul,
+ol {
+  margin: $html-list-margin;
+  padding: $html-list-padding;
+
+  li {
+    margin: $html-list-item-margin;
+  }
+}
+
+
+ol ol,
+ol ul,
+ol dl,
+ul ol,
+ul ul,
+ul dl,
+dl ul,
+dl ol,
+dl dl {
+  margin: 0;
+  padding: $html-list-nested-padding;
+}
+
+
+dl {
+	margin: $html-list-margin;
+  padding: 0;
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin: $html-list-item-margin;
+    padding: 0;
+  }
+}
+
+
+dfn {
+	border-bottom: $html-dfn-border;
+}
+
+
+.#{$namespace}-list {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: $list-header-height;
+    font-weight: normal;
+  }
+
+  &__title {
+    font-size: $h4-font-size;
+    font-weight: $list-header-title-font-weight;
+  }
+
+  &__hint {
+    width: $list-header-hint-width;
+    margin: $list-header-hint-margin;
+    text-align: $list-header-hint-align;
+    font-size: $list-header-hint-font-size;
+    font-weight: $list-header-hint-font-weight;
+    color: $list-header-hint-color;
+  }
+
+  &__item {
+    @include set-background($list-background);
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    margin: $list-margin;
+    padding: $list-padding;
+    overflow: hidden;
+
+    & + & {
+      @include set-border($list-border, $list-padding);
+    }
+  }
+
+  &__empty {
+    padding: $list-padding;
+  }
+}
+
+
+.#{$namespace}-list--stripped {
+  .#{$namespace}-list__item + .#{$namespace}-list__item {
+    border: 0;
+  }
+
+  .#{$namespace}-list__item:nth-child(2n) {
+    @include set-background($list-stripped-background);
+  }
+}

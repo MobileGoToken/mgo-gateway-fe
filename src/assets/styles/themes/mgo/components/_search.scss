@@ -1,0 +1,8 @@
+$search-padding: 34px;
+$search-icon-color: map-get($text-colors, dark);
+$search-background: (
+  image: svg-url('<svg width="14" height="14" viewBox="0 0 14 14" fill="#{color('tertiary')}" xmlns="http://www.w3.org/2000/svg"><path d="M5.2 0a5.2 5.2 0 0 1 5.2 5.2 5.212 5.212 0 0 1-1.248 3.384l.216.216H10l4 4-1.2 1.2-4-4v-.632l-.216-.216A5.212 5.212 0 0 1 5.2 10.4 5.2 5.2 0 1 1 5.2 0zm0 1.6c-2 0-3.6 1.6-3.6 3.6s1.6 3.6 3.6 3.6 3.6-1.6 3.6-3.6-1.6-3.6-3.6-3.6z"/></svg>'),
+  repeat: no-repeat,
+  position: 10px center,
+  size: $base-font-size
+);

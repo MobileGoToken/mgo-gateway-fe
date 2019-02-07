@@ -1,0 +1,63 @@
+$select-min-width: 115px;
+$select-max-width: 200px;
+$select-full-width: 100%;
+$select-height: rhythm(2);
+$select-margin: 0;
+$select-padding: 0.5 25px 0.5 10px;
+$select-font-family: $ui-font-family;
+$select-font-size: map-get($font-sizes, small);
+$select-font-weight: 500;
+$select-color: map-get($text-colors, default);
+$select-placeholder-color: map-get($text-colors, dark);
+
+$select-background: (
+  color: map-get($background-colors, default),
+  image: svg-url('<svg width="8" height="5" viewBox="0 0 8 5" fill="#{color('mint')}" xmlns="http://www.w3.org/2000/svg"><path d="M.938 0L4 3.101 7.063 0 8 .95 4 5 0 .95z"/></svg>'),
+  repeat: no-repeat,
+  position: right 10px center,
+  size: 8px 5px
+);
+
+$select-border: (
+  width: 1px,
+  style: solid,
+  color: map-get($border-colors, 'normal'),
+  radius: $default-border-radius
+);
+
+$select-box-shadow: none;
+$select-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+$select-focus-shadow: 0px 0px 2px 2px map-get($background-colors, selected);
+$select-focus-border-color: transparent;
+
+$select-hover-border-color: map-get($border-colors, hover);
+$select-hover-background: (
+  color: map-get($background-colors, default)
+);
+
+$select-multiple-height: rhythm(7.5);
+$select-multiple-padding: 0;
+$select-multiple-background: (
+  color: map-get($background-colors, control),
+  image: none
+);
+
+$select-option-height: rhythm(1.5);
+$select-option-padding: rhythm(0.25) 10px;
+
+$select-autofill-color: map-get($text-colors, normal);
+$select-autofill-background: map-get($background-colors, control);
+$select-autofill-border: transparent;
+
+$select-large-height: rhythm(2.5);
+$select-large-margin: rhythm(.25) 0;
+$select-large-padding: rhythm(.75) 25px rhythm(.75) 10px;
+
+$select-inline-title-color: map-get($text-colors, normal);
+$select-inline-background: (
+  image: svg-url('<svg width="8" height="5" xmlns="http://www.w3.org/2000/svg"><path d="M.938 0L4 3.101 7.063 0 8 .95 4 5 0 .95z" fill="#fff" fill-opacity=".5" fill-rule="evenodd" /></svg>'),
+  repeat: no-repeat,
+  position: right 5px center,
+  size: 8px 5px
+);

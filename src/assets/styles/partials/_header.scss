@@ -1,0 +1,17 @@
+$header-margin: 0 0 rhythm(1) 0 !default;
+
+.#{$namespace}-header {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  margin: $header-margin;
+
+  &__title {
+    flex: 1 1 auto;
+    margin: 0;
+  }
+
+  &__actions {
+    flex: 0 0 auto;
+  }
+}

@@ -1,0 +1,26 @@
+$form-group-min-height: rhythm(1);
+$form-group-margin: 0 0 rhythm(1) 0;
+$form-group-font-family: $ui-font-family;
+
+$form-group-large-min-height: rhythm(2);
+$form-group-large-margin: 0 0 rhythm(2) 0;
+
+$form-group-hint-top: rhythm(-1);
+$form-group-hint-padding: 0 0 0 10px;
+$form-group-hint-font-size: map-get($font-sizes, small);
+$form-group-hint-color: map-get($text-colors, 'opaque');
+
+$form-group-help-padding: 0;
+$form-group-help-font-size: map-get($font-sizes, small);
+$form-group-help-color: map-get($text-colors, 'opaque');
+
+$form-group-message-font-size: map-get($font-sizes, small);
+$form-group-message-font-weight: normal;
+$form-group-message-padding: 0 0 0 10px;
+$form-group-message-text-transform: capitalize;
+$form-group-message-text-letter-spacing: 1px;
+
+$form-group-label-text-size: map-get($font-sizes, 'tiny');
+$form-group-label-text-color: map-get($text-colors, 'normal');
+$form-group-label-text-transform: uppercase;
+$form-group-label-text-letter-spacing: 1px;

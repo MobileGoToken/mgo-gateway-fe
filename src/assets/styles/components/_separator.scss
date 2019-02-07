@@ -1,0 +1,26 @@
+$separator-color: #e2e2e2;
+
+.#{$namespace}-separator {
+  border-top: 1px solid $separator-color;
+
+  &--small {
+    margin: rhythm(.25) 0;
+  }
+
+  &--medium {
+    margin: rhythm(.5) 0;
+  }
+
+  &--strong {
+    margin: rhythm(.75) 0;
+  }
+
+  &--slayer {
+    margin: rhythm(1) 0;
+  }
+
+  &--wide {
+    margin-left: rhythm(.5);
+    margin-right: rhythm(.5);
+  }
+}

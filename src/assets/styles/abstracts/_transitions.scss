@@ -1,0 +1,222 @@
+// transitions
+
+$transition-group-transition: width 200ms ease-in, height 200ms ease-in !default;
+$transition-duration: 500ms !default;
+$transition-easing: ease-in-out !default;
+
+$transition-fade-enter: opacity .25s ease-in !default;
+$transition-fade-exit: opacity .25s ease-out !default;
+
+$transition-cube-enter: transform .5s ease-in-out, opacity .1s ease-in-out !default;
+$transition-cube-exit: transform .5s ease-in-out, opacity .1s ease-in-out .3s !default;
+$transition-cube-transform-origin: center top -200px !default;
+
+$transition-flip-enter: transform .1s ease-in, opacity .1s ease-in-out !default;
+$transition-flip-exit: transform .1s ease-out .2s, opacity .1s ease-in-out !default;
+
+$transition-scale-enter: transform .2s ease-in-out !default;
+$transition-scale-exit: transform .2s ease-in-out .2s !default;
+
+
+.#{$namespace}-transition {
+  will-change: transform, opacity;
+
+
+  &-group,
+  &-container {
+    position: relative;
+    transition: $transition-group-transition;
+  }
+
+
+  &-group {
+    perspective: 1000px;
+  }
+
+
+  &--slide-in {
+    &-enter {
+      transform: translateX(100%);
+    }
+
+    &-enter-active {
+      transform: translateX(0);
+      transition: transform 200ms ease-in-out;
+    }
+
+    &-exit {
+      transform: translateX(0);
+    }
+
+    &-exit-active {
+      transform: translateX(100%);
+      transition: transform 200ms ease-in-out;
+    }
+
+    &-exit-done {
+      //display: none;
+    }
+  }
+
+
+  &--fade {
+    &-appear,
+    &-appear-active {
+      opacity: 0;
+    }
+
+    &-enter {
+      opacity: 0;
+    }
+
+    &-enter-active {
+      opacity: 1;
+      transition: $transition-fade-enter;
+    }
+
+    &-exit {
+      opacity: 1;
+    }
+
+    &-exit-active {
+      opacity: 0;
+      transition: $transition-fade-exit;
+    }
+
+    &-exit-done {
+      opacity: 0;
+    }
+  }
+
+
+  &--flip {
+    transform: rotateY(360deg);
+    transform-style: preserve-3d;
+
+    &-enter {
+      opacity: 0;
+      transform: rotateY(180deg);
+      transition: $transition-flip-exit;
+      backface-visibility: hidden;
+      z-index: 1;
+
+      a,
+      button {
+        pointer-events: none;
+      }
+    }
+
+    &-enter-active {
+      transform: rotateY(270deg);
+      transition: $transition-flip-exit;
+    }
+
+    &-enter-done {
+      opacity: 1;
+      transform: rotateY(360deg);
+      transition: $transition-flip-enter;
+      z-index: 2;
+    }
+
+    &-exit {
+      opacity: 1;
+      transform: rotateY(360deg);
+      transition: $transition-flip-exit;
+      z-index: 2;
+
+      a,
+      button {
+        pointer-events: none;
+      }
+    }
+
+    &-exit-active {
+      transform: rotateY(450deg);
+      transition: $transition-flip-exit;
+    }
+
+    &-exit-done {
+      opacity: 0;
+      transform: rotateY(540deg);
+      transition: $transition-flip-exit;
+      backface-visibility: hidden;
+      z-index: 1;
+    }
+  }
+
+
+  &--cube-flip {
+    transform-style: preserve-3d;
+
+    &-enter {
+      transform: rotateY(-90deg);
+      transform-origin: $transition-cube-transform-origin; // z-axis is half width of box (must be defined in pixels)
+      transition: $transition-cube-enter;
+      position: absolute;
+      top: 0;
+      opacity: 0;
+
+      a,
+      button {
+        pointer-events: none;
+      }
+    }
+
+    &-enter-active {
+      transform: rotateY(0);
+      opacity: 1;
+    }
+
+    &-exit {
+      transform: rotateY(0);
+      top: 0;
+    }
+
+    &-exit-active {
+      transform: rotateY(90deg);
+      transform-origin: $transition-cube-transform-origin;
+      transition: $transition-cube-exit;
+      opacity: 0;
+
+      a,
+      button {
+        pointer-events: none;
+      }
+    }
+  }
+
+
+  &--scale {
+    transform-style: preserve-3d;
+
+    &-enter {
+      transform: scale(0);
+      transition: $transition-scale-enter;
+    }
+
+    &-enter-active {
+      transform: scale(0);
+      transition: $transition-scale-enter;
+    }
+
+    &-enter-done {
+      transform: scale(1);
+      transition: $transition-scale-enter;
+    }
+
+    &-exit {
+      transform: scale(1);
+      transition: $transition-scale-exit;
+    }
+
+    &-exit-active {
+      transform: scale(0);
+      transition: $transition-scale-exit;
+    }
+
+    &-exit-done {
+      transform: scale(0);
+      transition: $transition-scale-exit;
+    }
+  }
+}

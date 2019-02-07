@@ -1,0 +1,111 @@
+$hljs-color: map-get($colors, 'dark-gray') !default;
+$hljs-background: map-get($colors, 'white-smoke') !default;
+$hljs-comment-color: map-get($colors, 'gray') !default;
+$hljs-type-color: map-get($colors, 'red') !default;
+$hljs-title-color: map-get($colors, 'red') !default;
+$hljs-symbol-color: map-get($colors, 'tomato') !default;
+$hljs-literal-color: map-get($colors, 'forest') !default;
+$hljs-code-color: map-get($colors, 'green') !default;
+$hljs-meta-color: map-get($colors, 'blue') !default;
+$hljs-meta-string-color: map-get($colors, 'sea') !default;
+
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: rhythm(.5);
+  background: $hljs-background;
+}
+
+
+// Base color: saturation 0; 
+
+.hljs,
+.hljs-subst {
+  color: $hljs-color;
+}
+
+
+.hljs-comment {
+  color: $hljs-comment-color;
+}
+
+
+.hljs-keyword,
+.hljs-attribute,
+.hljs-selector-tag,
+.hljs-meta-keyword,
+.hljs-doctag,
+.hljs-name {
+  font-weight: bold;
+}
+
+
+// User color: hue: 0 
+
+.hljs-type,
+.hljs-string,
+.hljs-number,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-quote,
+.hljs-template-tag,
+.hljs-deletion {
+  color: $hljs-type-color;
+}
+
+
+.hljs-title,
+.hljs-section {
+  color: $hljs-title-color;
+  font-weight: bold;
+}
+
+
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: $hljs-symbol-color;
+}
+
+
+// Language color: hue: 90; 
+
+.hljs-literal {
+  color: $hljs-literal-color;
+}
+
+
+.hljs-built_in,
+.hljs-bullet,
+.hljs-code,
+.hljs-addition {
+  color: $hljs-code-color;
+}
+
+
+// Meta color: hue: 200 
+
+.hljs-meta {
+  color: $hljs-meta-color;
+}
+
+
+.hljs-meta-string {
+  color: $hljs-meta-string-color;
+}
+
+
+// Misc effects 
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}

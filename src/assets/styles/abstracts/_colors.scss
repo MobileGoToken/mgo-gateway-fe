@@ -1,0 +1,268 @@
+@import '../vendors/color-helpers';
+
+
+///
+/// Color Palette generator configuration
+///
+$palette-configuration: (
+  shades: (
+    'alpha-10':   .1,  // 10% opacity
+    'alpha-20':   .2,
+    'alpha-30':   .3,
+    'alpha-40':   .4,
+    'alpha-50':   .5,
+    'alpha-60':   .6,
+    'alpha-70':   .7,
+    'alpha-80':   .8,
+    'alpha-90':   .9,  // 90% opacity
+    'dark-90':  -90%,  // extra dark
+    'dark-80':  -80%,
+    'dark-70':  -70%,
+    'dark-60':  -60%,
+    'dark-50':  -50%,
+    'dark-40':  -40%,
+    'dark-30':  -30%,
+    'dark-20':  -20%,
+    'dark-10':  -10%,
+    'dark-5':   -5%,  // little dark
+    'light-5':   5%,  // little light
+    'light-10':  10%,
+    'light-20':  20%,
+    'light-30':  30%,
+    'light-40':  40%,
+    'light-50':  50%,
+    'light-60':  60%,
+    'light-70':  70%,
+    'light-80':  80%,
+    'light-90':  90%,  // extra light
+  ),
+
+  predefined: (
+    'primary':    #f7f9fc,
+    'secondary':  #c9d0df,
+    'tertiary':   #a8b2cb,
+  ),
+
+  colors: (
+    'black':      #2a2d33,
+    'white':      #ffffff,
+    'red':        #f72d2d,
+    'orange':     #ff9d2e,
+    'green':      #22d682,
+    'cyan':       #0ea5f0,
+    'blue':       #005ebd,
+    'gray':       #292836,
+  )
+) !default;
+
+
+
+///
+/// Convert color to RGBA string
+///
+/// @param {color} $color - color to convert
+/// @param {number} $alpha - opacity: 0 to 1
+/// @return {string} Stringified rgba value
+///
+@function to-rgba($color, $alpha: null) {
+  $red: round(red($color));
+  $green: round(green($color));
+  $blue: round(blue($color));
+  $alpha: if($alpha, $alpha, alpha($color));
+
+  @return unquote('rgba(#{$red}, #{$green}, #{$blue}, #{$alpha})');
+}
+
+
+///
+/// Slightly lighten a color
+///
+/// @access public
+/// @param {color} $color - color to tint
+/// @param {number} $percentage - percentage of `$color` in returned color
+/// @return {color}
+///
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+
+///
+/// Slightly darken a color
+///
+/// @access public
+/// @param {color} $color - color to shade
+/// @param {number} $percentage - percentage of `$color` in returned color
+/// @return {color}
+///
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+
+///
+/// Generate random color/Pick color randomly from predefined list of colors
+///
+/// @param {map} $palette - Color map (optional)
+/// @return {color} Color - either rgba if generated random or item from the list of colors
+///
+@function random-color($palette: false) {
+  $color: '';
+
+  @if ($palette) {
+    $names: map-keys($palette);
+    $color: map-get($palette, nth($names, random(length($names))));
+  }
+  @else {
+    $red: random(256) - 1;
+    $green: random(256) - 1;
+    $blue: random(256) - 1;
+    $alpha: random(100) / 100;
+    $color: rgba($red, $green, $blue, $alpha);
+  }
+
+  @return $color;
+}
+
+
+
+///
+/// Generating global color Palette
+///
+/// @param {map} $predefined - Predefined color map
+/// @return {map}
+/// @require $palette-configuration
+///
+@function generate-color-palette($predefined: null) {
+  $palette: ();
+  $shades: map-get($palette-configuration, shades);
+  $colors: map-merge(map-get($palette-configuration, predefined), map-get($palette-configuration, colors));
+
+  @each $name, $color in $colors {
+    $shade: 0;
+    $gradients: ();
+
+    $palette: map-merge($palette, ('#{$name}': to-rgba($color, 1)));
+
+    @each $key, $value in $shades {
+      $value: to-number($value);
+
+      @if $value < 0 {
+        $shade: to-rgba(darken($color, -$value), 1);
+      }
+      @else if $value > 0 and $value < 1 {
+        $shade: to-rgba($color, $value);
+      }
+      @else {
+        $shade: to-rgba(lighten($color, $value), 1);
+      }
+
+      $gradients: map-merge($gradients, ('#{$name}--#{$key}': $shade));
+    }
+
+    $palette: map-merge($palette, $gradients);
+  }
+  //@debug $palette;
+
+  @return $palette;
+}
+
+
+///
+/// Finds color name in the palette
+///
+/// @param {color} $color - Color to search for
+/// @return {string} Color name from the $palette
+/// @require $palette
+///
+@function find-color($color) {
+  @if type-of($color) != 'color' {
+    @error 'Parameter `#{$color}` must be a color.';
+  }
+
+  $color: to-rgba($color);
+
+  @each $key, $value in $palette {
+    @if $value == $color {
+      @return $key;
+    }
+  }
+
+  @warn 'Color #{$color} not found in the Palette.';
+
+  @return $color;
+}
+
+
+///
+/// Get color from the palette
+///
+/// @param {list} $color | $color, $var | $color, $modifier, $value, $var
+/// @require $namespace
+/// @require $palette
+/// @return {color} CSS var color with a fallback in RGBA format
+///
+@function color($args...) {
+  @if $args == null or length($args) == 0 or length($args) > 4 {
+    @error 'Invalid number of arguments: expected 1, 2, 3 or 4.';
+  }
+
+  $prefix: if($namespace, '#{$namespace}-', '');
+  $name: nth($args, 1);
+  $modifier: null;
+  $value: null;
+  $var: true;
+
+  @if length($args) == 4 {
+    $modifier: nth($args, 2);
+    $value: nth($args, 3);
+    $var: nth($args, 4);
+  }
+  @else if length($args) == 3 {
+    $modifier: nth($args, 2);
+    $value: nth($args, 3);
+  }
+  @else if length($args) == 2 {
+    @if type-of(nth($args, 2)) == 'bool' {
+      $var: nth($args, 2);
+    }
+    @else {
+      $modifier: nth($args, 2);
+    }
+  }
+
+  @if $modifier == null {
+    @return if($var == true,
+      var(--#{$prefix}color-#{$name}, map-get($palette, $name)),
+      map-get($palette, $name)
+    );
+  }
+  @else {
+    @if $value == null {
+      @return if($var == true,
+        var(--#{$prefix}color-#{$name}--#{$modifier}, map-get($palette, #{$name}-#{$modifier})),
+        map-get($palette, #{$name}-#{$modifier})
+      );
+    }
+    @else {
+      @return if($var == true,
+        var(--#{$prefix}color-#{$name}--#{$modifier}-#{$value}, map-get($palette, '#{$name}--#{$modifier}-#{$value}')),
+        map-get($palette, '#{$name}--#{$modifier}-#{$value}')
+      );
+    }
+  }
+}
+
+
+///
+/// Generate color palette
+///
+$palette: generate-color-palette() !default;
+//@debug $palette;
+
+
+///
+/// Generate color CSS variables
+///
+@include create-global('color', $palette);
+

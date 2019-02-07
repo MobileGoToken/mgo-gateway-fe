@@ -1,0 +1,73 @@
+$input-width: 200px;
+$input-height: rhythm(2);
+$input-margin: rhythm(0.125) 0;
+$input-padding: (
+  top: 0.5,
+  right: 10px,
+  bottom: 0.5,
+  left: 10px
+);
+$input-font-family: $ui-font-family;
+$input-font-size: map-get($font-sizes, small);
+$input-font-weight: 500;
+$input-letter-spacing: 1px;
+$input-color: map-get($text-colors, default);
+$input-background: map-get($background-colors, default);
+$input-border: (
+  width: 1px,
+  style: solid,
+  color: map-get($border-colors, 'normal'),
+  radius: $default-border-radius,
+);
+$input-box-shadow: none;
+$input-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+$input-large-height: rhythm(2.5);
+$input-large-margin: rhythm(.25) 0;
+$input-large-padding: (
+  top: 0.75,
+  right: 10px,
+  bottom: 0.75,
+  left: 10px
+);
+
+$input-placeholder-color: map-get($text-colors, dark);
+$input-hover-border-color: map-get($border-colors, hover);
+
+$input-autofill-color: map-get($text-colors, default);
+$input-autofill-background: map-get($background-colors, control);
+$input-autofill-border: transparent;
+
+$input-readonly-background: transparent;
+$input-readonly-border-color: transparent;
+
+$input-error-color: map-get($text-colors, default);
+$input-error-shadow: none;
+$input-error-border-color: map-get($text-colors, error);
+$input-error-placeholder-color: map-get($text-colors, dark);
+$input-error-background: none;
+$input-warning-color: map-get($text-colors, default);
+$input-warning-shadow: 0 0 0 1px map-get($text-colors, warning);
+$input-warning-border-color: transparent;
+$input-warning-placeholder-color: map-get($text-colors, warning);
+$input-warning-background: (
+  image: svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#{color('orange')}" d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>'),
+  repeat: no-repeat,
+  position: right 8px center,
+  color: $input-background,
+  size: 20px
+);
+$input-success-color: map-get($text-colors, default);
+$input-success-shadow: 0 0 0 1px map-get($text-colors, success);
+$input-success-border-color: transparent;
+$input-success-placeholder-color: map-get($text-colors, dark);
+$input-success-background: (
+  image: svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#{color('green')}" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>'),
+  repeat: no-repeat,
+  position: right 8px center,
+  color: $input-background,
+  size: 20px
+);
+
+$input-number-width: 200px;
+$input-number-align: left;

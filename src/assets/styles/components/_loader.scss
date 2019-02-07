@@ -1,0 +1,105 @@
+$loader-width: rhythm(4) !default;
+$loader-height: rhythm(1) !default;
+$loader-margin: rhythm(1) auto !default;
+$loader-z-index: 1 !default;
+$loader-background: transparent !default;
+$loader-animation: loader 1.4s infinite ease-in-out both !default;
+$loader-dot-width: 18px !default;
+$loader-dot-height: 18px !default;
+$loader-dot-color: map-get($background-colors, 'selected') !default;
+
+$loader-small-width: rhythm(3) !default;
+$loader-small-height: rhythm(1) !default;
+$loader-small-margin: 0 auto !default;
+$loader-small-dot-width: 9px !default;
+$loader-small-dot-height: 9px !default;
+
+$loader-textual-spacing: 1px !default;
+$loader-textual-animation: blink 1.4s infinite ease-in-out both !default;
+
+$loader-buggy-height: rhythm(.25) !default;
+$loader-buggy-margin: rhythm(.375) auto !default;
+
+
+.#{$namespace}-loader {
+  @include component;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $loader-width;
+  height: $loader-height;
+  margin: $loader-margin;
+  text-align: center;
+  cursor: wait;
+  overflow: hidden;
+  z-index: $loader-z-index;
+  background-color: $loader-background;
+
+  &__dot {
+    display: inline-block;
+    width: $loader-dot-width;
+    height: $loader-dot-height;
+    background-color: $loader-dot-color;
+    border-radius: 100%;
+    animation: $loader-animation;
+    text-indent: -9999px;
+
+    &:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+  }
+}
+
+
+.#{$namespace}-loader--small {
+  display: inline-flex;
+  width: $loader-small-width;
+  height: $loader-small-height;
+  margin: $loader-small-margin;
+  vertical-align: middle;
+
+  .#{$namespace}-loader__dot {
+    width: $loader-small-dot-width;
+    height: $loader-small-dot-height;
+  }
+}
+
+
+.#{$namespace}-loader--textual {
+  display: inline;
+  margin: 0;
+  width: auto;
+  height: auto;
+
+  .#{$namespace}-loader__dot {
+    display: inline;
+    text-indent: 0;
+    letter-spacing: $loader-textual-spacing;
+    background-color: transparent;
+    animation: $loader-textual-animation;
+
+    &:nth-child(1) {
+      padding-left: #{3 * $loader-textual-spacing};
+    }
+
+    &:nth-child(2) {
+      animation-delay: .2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: .4s;
+      padding-right: #{3 * $loader-textual-spacing};
+    }
+  }
+}
+
+
+.#{$namespace}-loader--buggy {
+  height: $loader-buggy-height;
+  margin: $loader-buggy-margin;
+}

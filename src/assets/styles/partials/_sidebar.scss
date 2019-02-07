@@ -1,0 +1,125 @@
+$sidebar-width: 220px !default;
+$sidebar-height: 100vh !default;
+$sidebar-padding: rhythm(1) 0 !default;
+$sidebar-background: (
+  color: map-get($background-colors, 'window'),
+) !default;
+$sidebar-shadow: 1px 0 0 0 color('secondary', 'alpha', 20) !default;
+$sidebar-icons: (
+  dashboard: svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path fill="#2A2D33" fill-rule="nonzero" d="M9 7.16V0C4 .5 0 4.79 0 10s4 9.5 9 10v-7.16c-1-.41-2-1.52-2-2.84 0-1.32 1-2.43 2-2.84zM12.86 9H20c-.48-4.75-4-8.53-9-9v7.16c1 .3 1.52.98 1.86 1.84zM11 12.84V20c5-.47 8.52-4.25 9-9h-7.14c-.34.86-.86 1.54-1.86 1.84z"/></svg>'),
+  addresses: svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path fill="#2A2D33" fill-rule="nonzero" d="M2 4H0v14c0 1.1.9 2 2 2h14v-2H2V4zm16-4H6C4.9 0 4 .9 4 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2zm-1 9H7V7h10v2zm-4 4H7v-2h6v2zm4-8H7V3h10v2z"/></svg>'),
+  transactions: svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path fill="#2A2D33" fill-rule="nonzero" d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zM4.5 7L8 3.5 11.5 7H9v4H7V7H4.5zm11 6L12 16.5 8.5 13H11V9h2v4h2.5z"/></svg>'),
+  logout: svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.92 6.92 0 0 1 19 12c0 3.87-3.13 7-7 7A6.995 6.995 0 0 1 7.58 6.58L6.17 5.17A8.932 8.932 0 0 0 3 12a9 9 0 0 0 18 0c0-2.74-1.23-5.18-3.17-6.83z"/></svg>'),
+) !default;
+
+$sidebar-item-height: rhythm(2.5) !default;
+$sidebar-item-margin: rhythm(.25) 0 !default;
+$sidebar-item-padding: rhythm(.75) rhythm(1) !default;
+$sidebar-item-font-weight: 500 !default;
+$sidebar-item-color: map-get($text-colors, 'dark') !default;
+$sidebar-item-hover-color: map-get($text-colors, 'normal') !default;
+
+$sidebar-item-selected-color: map-get($text-colors, 'normal') !default;
+$sidebar-item-selected-shadow: inset 4px 0 0 0 map-get($text-colors, 'link') !default;
+
+$sidebar-item-icon-spacing: 15px !default;
+$sidebar-item-selected-icon-color: map-get($text-colors, 'link') !default;
+
+$sidebar-footer-padding: 0 rhythm(1) !default;
+
+
+.#{$namespace}-sidebar {
+  @include set-background($sidebar-background);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: $sidebar-width;
+  height: $sidebar-height;
+  padding: $sidebar-padding;
+  box-shadow: $sidebar-shadow;
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: block;
+    height: $sidebar-item-height;
+    margin: $sidebar-item-margin;
+    padding: $sidebar-item-padding;
+    color: $sidebar-item-color;
+    font-weight: $sidebar-item-font-weight;
+    white-space: nowrap;
+
+    &__text {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: none;
+        box-shadow: none;
+        color: $sidebar-item-hover-color;
+      }
+    }
+
+    .#{$namespace}-icon {
+      margin-right: $sidebar-item-icon-spacing;
+    }
+
+    &[aria-selected="true"] {
+      color: $sidebar-item-selected-color;
+      box-shadow: $sidebar-item-selected-shadow;
+
+      .#{$namespace}-icon {
+        color: $sidebar-item-selected-icon-color;
+      }
+    }
+  }
+
+  &__footer {
+    width: 100%;
+    padding: $sidebar-footer-padding;
+    color: $sidebar-item-color;
+    font-weight: $sidebar-item-font-weight;
+
+    .#{$namespace}-link {
+      color: inherit;
+
+      &:hover {
+        text-decoration: none;
+        box-shadow: none;
+        color: $sidebar-item-hover-color;
+      }
+    }
+
+    .#{$namespace}-icon {
+      margin-right: $sidebar-item-icon-spacing;
+    }
+  }
+}
+
+
+.#{$namespace}-sidebar__item {
+  &--dashboard {
+    //@include icon(map-get($sidebar-icons, logout), (
+    //  pseudo: true,
+    //  size: 'large',
+    //  side: 'left',
+    //  margin: 1em,
+    //));
+  }
+
+  &--addresses {
+  }
+
+  &--transactions {
+  }
+}
+

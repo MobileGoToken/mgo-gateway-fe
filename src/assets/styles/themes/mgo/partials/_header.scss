@@ -1,0 +1,82 @@
+$header-height: rhythm(3);
+$header-margin: 0 0 rhythm(1) 0;
+$header-title-padding: 0;
+
+$header-action-top: rhythm(.25);
+$header-action-left: rhythm(.5);
+$header-action-width: rhythm(2.5);
+$header-action-height: rhythm(2.5);
+$header-action-margin: 0;
+$header-action-opacity: .5;
+
+
+.#{$namespace}-header {
+  &__select {
+    &--addresses {
+      margin-right: rhythm(1);
+      min-width: 100px;
+      color: #262626;
+    }
+
+    &--wrapper {
+      font-family: $ui-font-family;
+      display: flex;
+
+      .#{$namespace}-button {
+        margin: rhythm(.25) 0 rhythm(.25) 0;
+
+        svg > path {
+          fill: #ffffff;
+        }
+      }
+
+      + .#{$namespace}-header__select--wrapper {
+        margin-left: rhythm(1);
+      }
+    }
+  }
+
+  &__balance {
+    color: #ffffff;
+    margin: rhythm(.25) 0 rhythm(1.25) 0;
+  }
+
+  &__placeholders {
+    margin-bottom: rhythm(.25);
+
+    span {
+      font-size: map-get($font-sizes, small);
+      min-width: 100px;
+      color: #a5b6ca;
+      display: inline-block;
+      font-family: $ui-font-family;
+      margin-right: rhythm(1);
+    }
+  }
+
+  &__title {
+    width: 100%;
+    margin: 0;
+    padding: $header-title-padding;
+    overflow: hidden;
+    text-transform: uppercase;
+    color: #a5b6ca;
+    line-height: 2.04;
+    height: 29px;
+    font-size: map-get($font-sizes, normal);
+  }
+
+  &__action {
+    position: absolute;
+    top: $header-action-top;
+    left: $header-action-left;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: $header-action-width;
+    height: $header-action-height;
+    margin: $header-action-margin;
+    padding: 0;
+    z-index: 1;
+  }
+}

@@ -1,0 +1,37 @@
+$body-color: map-get($application, text);
+$body-background: map-get($application, background);
+$body-opacity: 1 !important;
+$body-transition: opacity 0.4s linear;
+
+
+:root,
+body,
+#root,
+main {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+
+body,
+body[style] {
+  @include set-background($body-background);
+
+  color: $body-color;
+}
+
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  &[style] {
+    opacity: $body-opacity;
+    transition: $body-transition;
+  }
+}

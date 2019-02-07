@@ -1,0 +1,144 @@
+$button-group-height: rhythm(2) !default;
+$button-group-margin: rhythm(.125) 0 !default;
+$button-group-spacing: 12px !default;
+$button-group-small-height: rhythm(1) !default;
+$button-group-large-height: rhythm(2.25) !default;
+$button-group-border-radius: $default-border-radius !default;
+
+
+/// Button group
+
+.#{$namespace}-button-group {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: $button-group-height;
+
+  &--full {
+    width: 100%;
+  }
+
+  &--left {
+    justify-content: flex-start;
+  }
+
+  &--right {
+    justify-content: flex-end;
+
+    .#{$namespace}-button:last-of-type {
+      margin-left: auto;
+    }
+  }
+
+  &--center {
+    justify-content: center;
+  }
+
+  &--justify {
+    justify-content: space-between;
+
+    .#{$namespace}-button:last-of-type {
+      margin-left: auto;
+    }
+  }
+
+  &--separate {
+    margin: 0;
+
+    .#{$namespace}-link + .#{$namespace}-link,
+    .#{$namespace}-link + .#{$namespace}-button,
+    .#{$namespace}-button + .#{$namespace}-link,
+    .#{$namespace}-button + .#{$namespace}-button {
+      margin-left: $button-group-spacing;
+    }
+
+    .#{$namespace}-link + .#{$namespace}-link,
+    .#{$namespace}-link + .#{$namespace}-button,
+    .#{$namespace}-button--large + .#{$namespace}-link,
+    .#{$namespace}-button--large + .#{$namespace}-button--large {
+      margin-left: 2 * $button-group-spacing;
+    }
+  }
+
+  &--compact {
+    margin: $button-group-margin;
+
+    .#{$namespace}-button {
+      margin: 0;
+      white-space: nowrap;
+      border-radius: 0;
+
+      &:hover {
+        z-index: 1;
+      }
+
+      &:focus {
+        z-index: 2;
+      }
+
+      &:first-child {
+        border-radius: $button-group-border-radius 0 0 $button-group-border-radius;
+      }
+
+      &:last-child {
+        border-radius: 0 $button-group-border-radius $button-group-border-radius 0;
+      }
+
+      &:first-child:last-child {
+        border-radius: $button-group-border-radius;
+      }
+
+      & + .#{$namespace}-button {
+        margin-left: -$default-rhythm-border-width;
+      }
+    }
+  }
+
+  &--small {
+    min-height: $button-group-small-height;
+
+    .#{$namespace}-button {
+      @extend .#{$namespace}-button--small;
+    }
+
+    &.#{$namespace}-button-group--separate {
+      .#{$namespace}-link + .#{$namespace}-link,
+      .#{$namespace}-link + .#{$namespace}-button,
+      .#{$namespace}-button + .#{$namespace}-link,
+      .#{$namespace}-button + .#{$namespace}-button {
+        margin-left: $button-group-spacing / 2;
+      }
+    }
+  }
+
+  &--medium {
+    .#{$namespace}-button {
+      @extend .#{$namespace}-button--medium;
+    }
+  }
+
+  &--large {
+    min-height: $button-group-large-height;
+
+    .#{$namespace}-button {
+      @extend .#{$namespace}-button--large;
+    }
+
+    &.#{$namespace}-button-group--separate {
+      .#{$namespace}-link + .#{$namespace}-link,
+      .#{$namespace}-link + .#{$namespace}-button,
+      .#{$namespace}-button + .#{$namespace}-link,
+      .#{$namespace}-button + .#{$namespace}-button {
+        margin-left: 2 * $button-group-spacing;
+      }
+    }
+  }
+
+
+  .#{$namespace}-loader {
+    margin: 0;
+  }
+}
+
+
+

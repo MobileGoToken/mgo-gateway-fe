@@ -1,0 +1,73 @@
+$html-link-margin: 0 !default;
+$html-link-padding: 0 !default;
+$html-link-font-family: $ui-font-family !default;
+$html-link-font-size: inherit !default;
+$html-link-font-weight: normal !default;
+$html-link-color: map-get($text-colors, 'link') !default;
+$html-link-background: transparent !default;
+$html-link-text-decoration: none !default;
+$html-link-hover-color: map-get($text-colors, 'normal') !default;
+$html-link-hover-text-decoration: none !default;
+$html-link-border: none !default;
+$html-link-hover-border: none !default;
+$html-link-hover-box-shadow: 0 2px 0 0 map-get($text-colors, 'link') !default;
+$html-link-external-icon: svg-url('data:image/svg+xml,<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><path d="M6.111 0v1.111h1.995L2.644 6.572l.784.784 5.46-5.462V3.89H10V0H6.111zM8.89 8.889H1.11V1.11H5V0H1.111C.494 0 0 .5 0 1.111V8.89C0 9.503.497 10 1.111 10H8.89C9.503 10 10 9.503 10 8.889V5H8.889v3.889z" fill="#FFF" fill-rule="nonzero" opacity=".2"/></svg>') !default;
+$html-link-alt-color: map-get($text-colors, 'inverse') !default;
+$html-link-alt-text-decoration: underline !default;
+
+$html-link-large-font-size: map-get($font-sizes, 'large') !default;
+
+
+.#{$namespace}-link {
+  @include set-border($html-link-border);
+
+  display: inline;
+  margin: $html-link-margin;
+  padding: $html-link-padding;
+  font-family: $html-link-font-family;
+  font-size: $html-link-font-size;
+  font-weight: $html-link-font-weight;
+  color: $html-link-color;
+  background: $html-link-background;
+  text-decoration: $html-link-text-decoration;
+
+  &:hover,
+  &--hover {
+    @include set-border($html-link-hover-border);
+
+    cursor: pointer;
+    color: $html-link-hover-color;
+    background: $html-link-background;
+    text-decoration: $html-link-hover-text-decoration;
+    box-shadow: $html-link-hover-box-shadow;
+  }
+
+  &:focus:not([tabindex='-1']),
+  &--focus:not([tabindex='-1']) {
+    @include focus(null);
+  }
+
+  &--external,
+  &[rel~="external"] {
+    @include icon($html-link-external-icon, (
+      pseudo: true,
+      size: 'tiny',
+      side: 'right',
+      margin: 3px,
+    ));
+  }
+
+  &--large {
+    font-size: $html-link-large-font-size;
+  }
+
+  &--alt {
+    color: $html-link-alt-color;
+    text-decoration: $html-link-alt-text-decoration;
+
+    &:hover {
+      color: $html-link-alt-color;
+      text-decoration: $html-link-alt-text-decoration;
+    }
+  }
+}

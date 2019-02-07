@@ -1,0 +1,19 @@
+$form-header-margin: 0 0 rhythm(2) 0;
+$form-footer-margin: rhythm(2) 0 0 0;
+$form-messages-margin: 0 0 rhythm(2) 0;
+
+$form-dialog-padding: rhythm(2.5) rhythm(3.5);
+$form-dialog-background: map-get($background-colors, "window");
+$form-dialog-border: (
+  width: 1px,
+  style: solid,
+  color: transparent,
+  radius: $default-border-radius
+);
+$form-dialog-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+
+$form-sizes: (
+  small: 400px,
+  medium: 500px,
+  large: 600px
+);

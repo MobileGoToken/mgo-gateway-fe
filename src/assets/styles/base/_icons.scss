@@ -1,0 +1,120 @@
+$icon-font-family: $base-font-family !default;
+
+$icon-sizes: (
+  'tiny': 10px,
+  'small': 12px,
+  'normal': 14px,
+  'large': 20px,
+  'toolbar': 32px,
+  'thumbnail': 80px,
+) !default;
+
+
+%icon--busy {
+  animation: pulsate 2s infinite linear;
+}
+
+
+%icon {
+  display: inline-block;
+  box-sizing: border-box;
+  line-height: inherit;
+
+  font-family: $icon-font-family;
+  font-size: inherit;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  text-rendering: auto;
+  vertical-align: top;
+
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  &[aria-busy='true'] {
+    @extend %icon--busy;
+  }
+}
+
+
+[data-icon]::before {
+  @extend %icon;
+}
+
+
+@mixin __icon__(
+  $side: 'right',
+  $margin: 0,
+  $size: map-get($icon-sizes, 'normal'),
+  $width: rhythm(1),
+  $height: rhythm(1),
+  $cover: false,
+  $data: none,
+  $color: transparent,
+  $busy: false,
+  $pseudo: false
+) {
+  @extend %icon;
+
+  @if $pseudo == true {
+    content: '\00a0';
+  }
+
+  margin-#{if($side == 'right', 'left', 'right')}: $margin;
+
+  width: if($cover == true, 100%, $width);
+  height: if($cover == true, 100%, $height);
+  background: $data center center / $size no-repeat $color;
+
+  @if $busy {
+    @extend %icon--busy;
+  }
+}
+
+
+///
+/// Icon mixin
+///
+///
+@mixin icon($data,
+  $options: (
+    pseudo: false,
+    size: 'normal',
+    width: rhythm(1),
+    height: rhythm(1),
+    cover: false,
+    side: 'left',
+    margin: 0,
+    color: transparent,
+    busy: false
+  )
+) {
+  $pseudo: if(map-has-key($options, pseudo), map-get($options, pseudo), false);
+  $size: if(map-has-key($options, size), map-get($icon-sizes, map-get($options, size)), map-get($icon-sizes, 'normal'));
+  $width: if(map-has-key($options, width), map-get($options, width), rhythm(1));
+  $height: if(map-has-key($options, height), map-get($options, height), rhythm(1));
+  $cover: if(map-has-key($options, cover), map-get($options, cover), false);
+  $side: if(map-has-key($options, side), map-get($options, side), 'left');
+  $margin: if(map-has-key($options, margin), map-get($options, margin), 0);
+  $color: if(map-has-key($options, color), map-get($options, color), transparent);
+  $busy: if(map-has-key($options, busy), map-get($options, busy), false);
+
+  @if $pseudo == true {
+    @if $side == 'left' {
+      &::before {
+        @include __icon__($side, $margin, $size, $width, $height, $cover, $data, $color, $busy, true);
+      }
+    }
+    @else {
+      &::after {
+        @include __icon__($side, $margin, $size, $width, $height, $cover, $data, $color, $busy, true);
+      }
+    }
+  }
+  @else {
+    @include __icon__($side, $margin, $size, $width, $height, $cover, $data, $color, $busy, false);
+  }
+}
+
+

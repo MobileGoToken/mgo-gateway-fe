@@ -1,0 +1,8 @@
+$amount-color: color('white');
+$amount-font-family: $base-font-family;
+$amount-font-weight: normal;
+$amount-font-size: map-get($font-sizes, 'normal');
+$amount-small-font-size: map-get($font-sizes, 'small');
+$amount-medium-font-size: map-get($font-sizes, 'normal');
+$amount-large-font-size: map-get($font-sizes, 'large');
+$amount-huge-font-size: map-get($font-sizes, 'h2');

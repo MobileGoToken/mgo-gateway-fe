@@ -1,0 +1,390 @@
+$html-heading-color: map-get($text-colors, 'normal') !default;
+$html-heading-color-secondary: map-get($text-colors, 'normal') !default;
+$html-heading-font-weight: normal !default;
+
+$html-text-color: map-get($text-colors, 'normal') !default;
+$html-text-color-secondary: map-get($text-colors, 'dark') !default;
+
+$html-paragraph-margin: 0 0 $text-spacing 0 !default;
+
+$html-hr-border: $default-rhythm-border-width $default-rhythm-border-style map-get($border-colors, 'dark') !default;
+
+$html-abbr-border: $default-rhythm-border-width $default-rhythm-border-style map-get($text-colors, 'normal') !default;
+
+$html-address-margin: 0 0 $text-spacing 0 !default;
+
+$html-code-padding: 0 4px !default;
+$html-code-color: map-get($text-colors, 'normal') !default;
+$html-code-font: normal normal normal $base-font-size $monospace-font-family !default;
+$html-code-background: map-get($background-colors, 'body') !default;
+$html-code-radius: $default-border-radius !default;
+
+$html-pre-margin: 0 0 $text-spacing 0 !default;
+$html-pre-padding: rhythm(.5) !default;
+$html-pre-code-font: normal normal normal $base-font-size $monospace-font-family !default;
+$html-pre-code-border: $default-rhythm-border-width $default-rhythm-border-style map-get($border-colors, 'normal') !default;
+$html-pre-code-radius: $default-border-radius !default;
+$html-pre-samp-border: none !default;
+
+$html-samp-padding: rhythm(.5) rhythm(1) !default;
+$html-samp-color: map-get($text-colors, 'hover') !default;
+$html-samp-background: map-get($background-colors, 'normal') !default;
+$html-samp-border: (
+  width: 1px,
+  style: solid,
+  color: color('black', 'light', 70),
+  radius: 4px,
+) !default;
+
+$html-kbd-font: normal normal normal $base-font-size $monospace-font-family !default;
+$html-kbd-color: map-get($text-colors, 'normal') !default;
+$html-kbd-background: map-get($text-colors, 'body') !default;
+$html-kbd-border: $default-rhythm-border-width $default-rhythm-border-style map-get($border-colors, 'normal') !default;
+$html-kbd-box-shadow: 0 0 0 1px #ffffff inset !default;
+$html-kbd-text-shadow: 0 1px 0 #ffffff !default;
+
+$html-cite-font: normal normal normal map-get($font-sizes, 'normal') inherit !default;
+$html-cite-color: map-get($text-colors, 'normal') !default;
+$html-cite-mark: '\2014 \2009' !default;
+
+$html-quote-margin: 0 0 rhythm(1) 0 !default;
+$html-quote-padding: rhythm(.5) rhythm(.5) rhythm(.5) 30px !default;
+$html-quote-font: italic normal normal map-get($font-sizes, 'large') $cursive-font-family !default;
+$html-quote-background: none !default;
+$html-quote-border: none !default;
+$html-quote-radius: $default-border-radius !default;
+$html-quote-text-align: justify !default;
+$html-quote-nested-margin: rhythm(.5) 0 0 0 !default;
+$html-quote-mark-char: '\201C' !default;
+$html-quote-mark-top: 0 !default;
+$html-quote-mark-left: 0 !default;
+$html-quote-mark-width: 30px !default;
+$html-quote-mark-height: 20px !default;
+$html-quote-mark-font: normal normal normal 50px/50px 'Georgia', serif !default;
+$html-quote-mark-color: map-get($text-colors, 'dark') !default;
+
+
+:root,
+button,
+input,
+option,
+select,
+textarea {
+  font-weight: $base-font-weight;
+}
+
+
+///
+/// Headings
+///
+///
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: $html-heading-font-weight;
+  //
+  //&:first-of-type {
+  //  margin-top: 0;
+  //}
+}
+
+h1 {
+  line-height: rhythm(2);
+  margin-bottom: rhythm(2);
+}
+
+h2 {
+  line-height: rhythm(1.5);
+  margin-bottom: rhythm(1.5);
+}
+
+h3 {
+  line-height: rhythm(1);
+  margin-bottom: rhythm(1);
+}
+
+h4,
+h5,
+h6 {
+  line-height: rhythm(1);
+}
+
+//header > h1,
+//header > h2,
+//header > h3,
+//header > h4,
+//header > h5,
+//header > h6 {
+//  margin-top: 0;
+//  color: map-get($text-colors, 'light');
+//}
+
+.#{$namespace}-heading {
+  color: map-get($text-colors, 'normal');
+}
+
+.#{$namespace}-heading--secondary {
+  color: map-get($text-colors, 'dark');
+}
+
+.#{$namespace}-text {
+  color: map-get($text-colors, 'normal');
+}
+
+.#{$namespace}-text--secondary {
+  color: map-get($text-colors, 'light');
+}
+
+.#{$namespace}-text--alt {
+  color: map-get($text-colors, 'alt');
+}
+
+.#{$namespace}-text--opaque {
+  color: map-get($text-colors, 'opaque');
+}
+
+.#{$namespace}-text--bold {
+  font-weight: bold;
+}
+
+
+/// Text colors
+
+.#{$namespace}-text--success {
+  color: map-get($text-colors, 'success');
+}
+
+.#{$namespace}-text--warning {
+  color: map-get($text-colors, 'warning');
+}
+
+.#{$namespace}-text--gold {
+  color: color('gold');
+}
+
+.#{$namespace}-text--alert,
+.#{$namespace}-text--error,
+.#{$namespace}-text--invalid {
+  color: map-get($text-colors, 'error');
+}
+
+.#{$namespace}-text--info {
+  color: map-get($text-colors, 'info');
+}
+
+
+/// Text sizes
+
+.#{$namespace}-text--tiny {
+  font-size: map-get($font-sizes, 'tiny');
+}
+
+.#{$namespace}-text--small {
+  font-size: map-get($font-sizes, 'small');
+}
+
+.#{$namespace}-text--medium {
+  font-size: map-get($font-sizes, 'normal');
+}
+
+.#{$namespace}-text--large {
+  font-size: map-get($font-sizes, 'large');
+}
+
+.#{$namespace}-text--huge {
+  font-size: map-get($font-sizes, 'huge');
+}
+
+
+.#{$namespace}-text--inline {
+  display: inline;
+  margin: 0;
+}
+
+
+/// Text alignment
+
+.#{$namespace}-text--center {
+  text-align: center;
+}
+
+
+///
+/// Paragraph
+///
+///
+p {
+  margin: $html-paragraph-margin;
+}
+
+
+small {
+  font-size: map-get($font-sizes, small);
+}
+
+
+///
+/// Horizontal rule
+///
+///
+hr {
+  width: 100%;
+  height: 0;
+  margin: $text-spacing 0;
+  border: 0;
+  border-top: $html-hr-border;
+}
+
+
+///
+/// Abbreviation, acronyms
+///
+///
+abbr,
+acronym {
+  border-bottom: $html-abbr-border;
+}
+
+
+///
+/// Address
+///
+///
+address {
+  margin: $html-address-margin;
+  padding: 0;
+  font-style: normal;
+}
+
+
+///
+/// Preformatted text
+///
+///
+pre,
+var,
+code,
+samp {
+  white-space: pre-wrap;
+  font: $html-code-font;
+  color: $html-code-color;
+}
+
+
+var,
+code {
+  padding: $html-code-padding;
+  background: $html-code-background;
+  border-radius: $html-code-radius;
+}
+
+
+samp {
+  @include set-border($html-samp-border);
+
+  padding: $html-samp-padding;
+  color: $html-samp-color;
+  background: $html-samp-background;
+}
+
+
+pre {
+  display: block;
+  margin: $html-pre-margin;
+  white-space: pre;
+
+  code,
+  samp {
+    display: block;
+    padding: $html-pre-padding;
+    font: $html-pre-code-font;
+    white-space: pre;
+    overflow: auto;
+    border-radius: $html-pre-code-radius;
+  }
+
+  code {
+    border: $html-pre-code-border;
+  }
+
+  samp {
+    border: $html-pre-samp-border;
+  }
+}
+
+
+///
+/// Key / shortcut
+///
+///
+kbd {
+  padding: $html-code-padding;
+  vertical-align: bottom;
+  font: $html-kbd-font;
+  white-space: nowrap;
+  color: $html-kbd-color;
+  border: $html-kbd-border;
+  border-radius: $html-code-radius;
+  text-shadow: $html-kbd-text-shadow;
+  background: $html-kbd-background;
+  box-shadow: $html-kbd-box-shadow;
+}
+
+
+///
+/// Citations, quotes
+///
+///
+q,
+cite,
+blockquote {
+  font: $html-quote-font;
+}
+
+
+blockquote {
+  position: relative;
+  display: block;
+  margin: $html-quote-margin;
+  padding: $html-quote-padding;
+  text-align: $html-quote-text-align;
+  background: $html-quote-background;
+  border: $html-quote-border;
+  border-radius: $html-quote-radius;
+
+  &::before {
+    position: absolute;
+    display: inline-block;
+    width: $html-quote-mark-width;
+    height: $html-quote-mark-height;
+    font: $html-quote-mark-font;
+    color: $html-quote-mark-color;
+  }
+
+  &::before {
+    content: $html-quote-mark-char;
+    top: $html-quote-mark-top;
+    left: $html-quote-mark-left;
+  }
+
+  blockquote {
+    margin: $html-quote-nested-margin;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  cite {
+    display: block;
+    font: $html-cite-font;
+    color: $html-cite-color;
+
+    &::before {
+      content: $html-cite-mark;
+    }
+  }
+}

@@ -1,0 +1,120 @@
+$form-group-min-height: rhythm(1) !default;
+$form-group-margin: 0 0 rhythm(1) 0 !default;
+$form-group-font-family: $ui-font-family !default;
+
+$form-group-large-min-height: rhythm(2) !default;
+$form-group-large-margin: 0 0 rhythm(2) 0 !default;
+
+$form-group-hint-top: rhythm(-1) !default;
+$form-group-hint-padding: 0 0 0 10px !default;
+$form-group-hint-font-size: map-get($font-sizes, small) !default;
+$form-group-hint-color: map-get($text-colors, 'opaque') !default;
+
+$form-group-help-padding: 0 !default;
+$form-group-help-font-size: map-get($font-sizes, small) !default;
+$form-group-help-color: map-get($text-colors, 'opaque') !default;
+
+$form-group-message-font-size: map-get($font-sizes, tiny) !default;
+$form-group-message-font-weight: normal !default;
+$form-group-message-padding: 0 0 0 10px !default;
+$form-group-message-font-size: map-get($font-sizes, small) !default;
+$form-group-message-text-transform: none !default;
+$form-group-message-text-letter-spacing: 0 !default;
+$form-group-message-text-transition: opacity .5s ease-in-out .5s !default;
+
+$form-group-label-text-size: map-get($font-sizes, 'tiny') !default;
+$form-group-label-text-color: map-get($text-colors, 'normal') !default;
+$form-group-label-text-transform: uppercase !default;
+$form-group-label-text-letter-spacing: 1px !default;
+
+
+.#{$namespace}-form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: $form-group-min-height;
+  margin: $form-group-margin;
+  text-align: left;
+
+  &--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+  }
+
+  &--large {
+    min-height: $form-group-large-min-height;
+    margin: $form-group-large-margin;
+
+    .#{$namespace}-input__message {
+      margin-top: rhythm(.25);
+    }
+  }
+
+  &--error {
+    .#{$namespace}-input__message {
+      color: map-get($text-colors, 'error');
+    }
+  }
+
+  &--warning {
+    .#{$namespace}-input__message {
+      color: map-get($text-colors, 'warning');
+    }
+  }
+
+  &--success {
+    .#{$namespace}-input__message {
+      color: map-get($text-colors, 'success');
+    }
+  }
+
+  .#{$namespace}-label {
+    overflow: visible;
+
+    &__text {
+      color: $form-group-label-text-color;
+      font-size: $form-group-label-text-size;
+      letter-spacing: $form-group-label-text-letter-spacing;
+      text-transform: $form-group-label-text-transform;
+    }
+  }
+}
+
+
+.#{$namespace}-input__hint {
+  position: absolute;
+  top: $form-group-hint-top;
+  right: 0;
+
+  padding: $form-group-hint-padding;
+  font-size: $form-group-hint-font-size;
+  line-height: $base-line-height;
+  color: $form-group-hint-color;
+}
+
+
+.#{$namespace}-input__help {
+  position: absolute;
+  padding: $form-group-help-padding;
+  font-size: $form-group-help-font-size;
+  color: $form-group-help-color;
+}
+
+
+.#{$namespace}-input__message {
+  @include fade-in(.4s);
+
+  position: absolute;
+  padding: $form-group-message-padding;
+  font-family: $form-group-font-family;
+  font-size: $form-group-message-font-size;
+  font-weight: $form-group-message-font-weight;
+  letter-spacing: $form-group-message-text-letter-spacing;
+  text-transform: $form-group-message-text-transform;
+  opacity: 0;
+  will-change: opacity;
+}
+
+

@@ -1,0 +1,29 @@
+$fieldset-dialog-padding: rhythm(2) rhythm(2) !default;
+$fieldset-dialog-background: map-get($background-colors, 'window') !default;
+$fieldset-dialog-border: (
+  width: 1px,
+  style: solid,
+  color: transparent,
+  radius: $default-border-radius
+) !default;
+$fieldset-dialog-shadow: 0 2px 6px 0 rgba(0,0,0, 0.3) !default;
+
+
+// Fieldset
+
+.#{$namespace}-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+
+
+  // Dialog like look & feel
+
+  &--dialog {
+    @include set-border($fieldset-dialog-border, $fieldset-dialog-padding);
+
+    background: $fieldset-dialog-background;
+    box-shadow: $fieldset-dialog-shadow;
+  }
+}

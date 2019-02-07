@@ -1,0 +1,150 @@
+$sidebar-backdrop-background: (
+  color: rgba(0, 0, 0, 0.5),
+) !default;
+
+$sidebar-offset: (
+  top: map-get(map-get($application, header), height),
+) !default;
+$sidebar-width: 380px !default;
+$sidebar-margin: 0 !default;
+$sidebar-padding: rhythm(1.5) !default;
+$sidebar-border: (
+  width: $default-rhythm-border-width,
+  color: rgba(0,0,0, .1),
+  radius: 0
+) !default;
+$sidebar-background: (
+  color: map-get($background-colors, 'window'),
+  clip: padding-box,
+) !default;
+$sidebar-shadow: -2px 0 4px 0 rgba(0,0,0, .15) !default;
+$sidebar-transition: all .15s ease-in-out !default;
+
+$sidebar-backdrop-z-index: 1010 !default;
+$sidebar-z-index: 1020 !default;
+
+
+/// sidebar body helper class
+
+body[style].modal-open {
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+
+/// Sidebar backdrop
+
+.#{$namespace}-sidebar__backdrop {
+  @include set-background($sidebar-backdrop-background);
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $sidebar-backdrop-z-index;
+  will-change: opacity;
+
+  &.fade {
+    opacity: 0;
+    transition: opacity .15s ease-in-out;
+
+    &.in {
+      opacity: 1;
+    }
+  }
+}
+
+
+/// sidebar wrapper
+
+.#{$namespace}-sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  outline: 0;
+  z-index: $sidebar-z-index;
+  -webkit-overflow-scrolling: touch;
+  will-change: opacity;
+
+  &[style] {
+    opacity: 1 !important;
+  }
+
+  &.fade {
+    .#{$namespace}-sidebar__panel {
+      &.#{$namespace}-sidebar--left {
+        transform: translateX(-100%);
+      }
+
+      &.#{$namespace}-sidebar--right {
+        transform: translateX(0);
+      }
+    }
+  }
+
+
+  &.fade.in {
+    .#{$namespace}-sidebar__panel {
+      &.#{$namespace}-sidebar--left {
+        transform: translateX(0);
+      }
+
+      &.#{$namespace}-sidebar--right {
+        transform: translateX(-100%);
+      }
+    }
+  }
+}
+
+
+/// Sidebar
+
+.#{$namespace}-sidebar__panel {
+  @include set-background($sidebar-background);
+  @include set-border($sidebar-border);
+
+  position: relative;
+  width: $sidebar-width;
+  height: 100%;
+  margin: $sidebar-margin;
+  overflow: hidden;
+  box-shadow: $sidebar-shadow;
+  transition: $sidebar-transition;
+  will-change: transform;
+
+  // sidebar content
+  > [role='document'] {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    outline: 0;
+    box-shadow: $sidebar-shadow;
+  }
+}
+
+
+.#{$namespace}-sidebar__swipeable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  outline: 0;
+}
+
+
+/// sidebar content alignment
+
+.#{$namespace}-sidebar--left {
+  left: 0;
+  right: unset;
+}
+
+.#{$namespace}-sidebar--right {
+  left: unset;
+  right: -$sidebar-width;
+}

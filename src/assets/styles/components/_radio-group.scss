@@ -1,0 +1,48 @@
+$radiogroup-height: rhythm(2) !default;
+$radiogroup-margin: 0 !default;
+$radiogroup-label-spacing: 12px !default;
+$radiogroup-hint-top: rhythm(1) !default;
+$radiogroup-hint-padding: 0 0 0 28px !default;
+$radiogroup-message-padding: 0 0 0 28px !default;
+$radiogroup-inline-height: rhythm(1) !default;
+
+
+.#{$namespace}-radiogroup {
+  position: relative;
+
+
+  .#{$namespace}-label {
+    display: inline-flex;
+    width: 100%;
+    height: $radiogroup-height;
+    margin: $radiogroup-margin;
+  }
+
+  .#{$namespace}-input__hint {
+    top: $radiogroup-hint-top;
+    width: 100%;
+    padding: $radiogroup-hint-padding;
+  }
+
+  .#{$namespace}-input__message {
+    padding: $radiogroup-message-padding;
+  }
+
+
+  &--inline {
+    .#{$namespace}-label {
+      position: relative;
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      width: auto;
+      height: $radiogroup-inline-height;
+      margin: 0;
+
+      + .#{$namespace}-label {
+        margin-left: $radiogroup-label-spacing;
+      }
+    }
+  }
+}

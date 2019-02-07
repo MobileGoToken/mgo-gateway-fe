@@ -1,0 +1,15 @@
+$output-font-weight: bold !default;
+$output-color: map-get($text-colors, 'normal') !default;
+
+
+.#{$namespace}-output {
+  display: inline-block;
+  font-weight: $output-font-weight;
+  color: $output-color;
+
+  &--wide,
+  &--full {
+    display: block;
+    width: 100%;
+  }
+}

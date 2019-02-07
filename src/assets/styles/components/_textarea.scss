@@ -1,0 +1,66 @@
+$textarea-width: 200px !default;
+$textarea-height: rhythm(4.5) !default;
+$textarea-margin: rhythm(.25) 0 !default;
+$textarea-padding: .25 10px .25 10px !default;
+$textarea-background: map-get($background-colors, 'control') !default;
+
+$textarea-border: (
+  width: 1px,
+  style: solid,
+  color: transparent,
+  radius: $default-border-radius
+) !default;
+
+$textarea-placeholder-color: map-get($text-colors, 'opaque') !default;
+$textarea-hover-border-color: transparent !default;
+$textarea-error-border-color: map-get($text-colors, error) !default;
+
+
+.#{$namespace}-textarea {
+  @include set-border($textarea-border, $textarea-padding);
+
+  appearance: none;
+  display: inline-block;
+  width: $textarea-width;
+  height: $textarea-height;
+  margin: $textarea-margin;
+  line-height: $base-line-height;
+  vertical-align: top;
+  resize: none;
+  background: $textarea-background;
+
+  &:hover {
+    border-color: $textarea-hover-border-color;
+  }
+
+  &::placeholder {
+    font-style: normal;
+    color: $textarea-placeholder-color;
+  }
+
+  & + .#{$namespace}-label {
+    margin-left: 8px;
+  }
+
+  &--error {
+    border-color: $textarea-error-border-color;
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    border-color: map-get($select-border, 'color') !important;
+    -webkit-text-fill-color: $select-placeholder-color !important;
+    -webkit-box-shadow: 0 0 0 1000px map-get($select-background, 'color') inset !important;
+  }
+}
+
+
+.#{$namespace}-textarea--full {
+  width: 100%;
+}
+
+
+.#{$namespace}-textarea--auto {
+  width: auto;
+}

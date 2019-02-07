@@ -1,0 +1,18 @@
+$avatar-width: rhythm(3);
+$avatar-height: rhythm(3);
+$avatar-radius: 100%;
+$avatar-border: (
+  radius: 100%,
+);
+
+$avatar-active-background: rgba(map-get($background-colors, 'hover'), .1);
+$avatar-active-shadow: 0 0 5px 2px rgba(map-get($background-colors, 'hover'), .5);
+$avatar-active-border: (
+  width: 1px,
+  style: solid,
+  color: map-get($border-colors, 'pill'),
+);
+
+$avatar-small-size: rhythm(2);
+$avatar-medium-size: rhythm(5);
+$avatar-large-size: rhythm(7);

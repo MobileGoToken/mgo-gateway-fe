@@ -1,0 +1,15 @@
+$textarea-width: 200px;
+$textarea-height: rhythm(3.5);
+$textarea-margin: rhythm(0.25) 0;
+$textarea-padding: 0.25 10px 0.25 10px;
+$textarea-background: map-get($background-colors, default);
+
+$textarea-border: (
+  width: 1px,
+  style: solid,
+  color: map-get($border-colors, 'normal'),
+  radius: $default-border-radius
+);
+
+$textarea-placeholder-color: map-get($text-colors, dark);
+$textarea-hover-border-color: map-get($border-colors, hover);

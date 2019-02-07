@@ -1,0 +1,15 @@
+{
+  "signIn": "Вход",
+  "noInvoiceData": "Нет данных о счете",
+  "copyClipboard": "Скопировать адрес в буфер обмена",
+  "totalBalance": "Общий баланс",
+  "numberOfAddresses": "Количество адресов",
+  "address": "Адрес",
+  "mnemonic_text": "Чтобы получить доступ к кошельку пожалуйста введите вашу мнемоническую фразу из 12 слов.",
+  "mnemonic_invalid": "Мнемоническая фраза введена неверно.",
+  "validatorsRequired": "Обязательное Поле",
+  "english": "English",
+  "russian": "Русский",
+  "chinese": "中文",
+  "korean": "한국어"
+}

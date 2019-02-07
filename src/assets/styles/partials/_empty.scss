@@ -1,0 +1,27 @@
+$empty-padding: rhythm(1) !default;
+$empty-font-size: $h2-font-size !default;
+$empty-font-weight: 300 !default;
+$empty-line-height: 1.5 * $base-line-height !default;
+$empty-align: center !default;
+$empty-text-transform: uppercase !default;
+$empty-white-space: pre-wrap !default;
+$empty-color: map-get($text-colors, 'dark') !default;
+
+
+.#{$namespace}-empty {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: $empty-align;
+  justify-content: $empty-align;
+
+  height: 100%;
+  padding: $empty-padding;
+
+  font-size: $empty-font-size;
+  font-weight: $empty-font-weight;
+  line-height: $empty-line-height;
+  text-align: $empty-align;
+  text-transform: $empty-text-transform;
+  white-space: $empty-white-space;
+  color: $empty-color;
+}

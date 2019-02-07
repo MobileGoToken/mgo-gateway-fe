@@ -1,0 +1,204 @@
+$select-min-width: 115px !default;
+$select-max-width: 100% !default;
+$select-full-width: 100% !default;
+$select-height: rhythm(1.75) !default;
+$select-margin: rhythm(.125) 0 !default;
+$select-padding: .375 25px .375 10px !default;
+$select-font-family: $ui-font-family !default;
+$select-font-size: map-get($font-sizes, large) !default;
+$select-font-weight: normal !default;
+$select-color: map-get($text-colors, 'normal') !default;
+$select-placeholder-color: map-get($text-colors, 'dark') !default;
+
+$select-background: (
+  color: map-get($background-colors, 'control'),
+  image: svg-url('<svg width="8" height="5" viewBox="0 0 8 5" fill="#{color('tertiary')}" xmlns="http://www.w3.org/2000/svg"><path d="M.938 0L4 3.101 7.063 0 8 .95 4 5 0 .95z"/></svg>'),
+  repeat: no-repeat,
+  position: right 10px center,
+  size: 8px 5px
+) !default;
+
+$select-border: (
+  width: 1px,
+  style: solid,
+  color: map-get($border-colors, 'normal'),
+  radius: $default-border-radius
+) !default;
+
+$select-box-shadow: none !default;
+$select-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
+
+$select-focus-shadow: 0px 0px 2px 2px map-get($background-colors, 'selected') !default;
+$select-focus-border-color: transparent !default;
+
+$select-hover-border-color: map-get($border-colors, 'hover') !default;
+$select-hover-background: (
+  color: map-get($background-colors, 'control')
+) !default;
+
+$select-multiple-height: rhythm(7.5) !default;
+$select-multiple-padding: 0 !default;
+$select-multiple-background: (
+  color: map-get($background-colors, 'control'),
+  image: none
+) !default;
+
+$select-option-height: rhythm(1.5) !default;
+$select-option-padding: rhythm(.25) 10px !default;
+
+$select-autofill-color: map-get($text-colors, 'normal') !default;
+$select-autofill-background: map-get($background-colors, 'body') !default;
+$select-autofill-border: color('secondary', 'light', 20) !default;
+
+$select-large-height: rhythm(2.25) !default;
+$select-large-margin: rhythm(.375) 0 !default;
+$select-large-padding: rhythm(.375) 25px rhythm(.375) 10px !default;
+
+$select-inline-title-color: map-get($text-colors, 'normal') !default;
+$select-inline-background: (
+  image: svg-url('<svg width="8" height="5" xmlns="http://www.w3.org/2000/svg"><path d="M.938 0L4 3.101 7.063 0 8 .95 4 5 0 .95z" fill="#fff" fill-opacity=".5" fill-rule="evenodd" /></svg>'),
+  repeat: no-repeat,
+  position: right 5px center,
+  size: 8px 5px
+) !default;
+
+
+%select {
+  @include set-border($select-border, $select-padding);
+  @include set-background($select-background);
+
+  display: inline-flex;
+  min-width: $select-min-width;
+  max-width: $select-max-width;
+  min-height: $select-height;
+  margin: $select-margin;
+  line-height: $base-line-height;
+  font-family: $select-font-family;
+  font-size: $select-font-size;
+  font-weight: $select-font-weight;
+  box-shadow: $select-box-shadow;
+  transition: $select-transition;
+  color: $select-color;
+
+  &:focus {
+    @extend %focus;
+  }
+
+  &:hover {
+    border-color: $select-hover-border-color;
+  }
+
+  &:not([multiple]) {
+    &:hover,
+    &:focus {
+      &:not([disabled]):not([aria-disabled='true']) {
+        @include set-background($select-hover-background);
+      }
+    }
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    border-color: $select-autofill-border !important;
+    -webkit-text-fill-color: $select-autofill-color !important;
+    -webkit-box-shadow: 0 0 0 1000px $select-autofill-background inset !important;
+  }
+}
+
+
+.#{$namespace}-select {
+  @include component(inline-flex);
+  @extend %select;
+
+  align-items: center;
+
+  appearance: none;
+  height: $select-height;
+
+  // remove select arrow for IE
+  &::-ms-expand {
+    display: none;
+  }
+
+  &:not([icon]):empty::before {
+    display: inline-block;
+    content: '...';
+  }
+
+  &.focus {
+    @extend %focus;
+  }
+
+  & + .#{$namespace}-label {
+    margin-left: 8px;
+  }
+}
+
+
+/// Large select
+
+.#{$namespace}-select--large {
+  @include set-border($select-border, $select-large-padding);
+
+  height: $select-large-height;
+  margin: $select-large-margin;
+  padding: $select-large-padding;
+
+  & + .#{$namespace}-select {
+    margin-left: 12px;
+  }
+}
+
+
+.#{$namespace}-select[multiple] {
+  @include set-background($select-multiple-background);
+
+  flex-direction: column;
+
+  height: auto;
+  max-height: $select-multiple-height;
+  padding: $select-multiple-padding;
+  vertical-align: top;
+
+  > option {
+    height: $select-option-height;
+    padding: $select-option-padding;
+  }
+}
+
+
+.#{$namespace}-select--fixed {
+  width: $select-min-width;
+  min-width: $select-min-width;
+  max-width: $select-min-width;
+}
+
+.#{$namespace}-select--auto {
+  width: auto;
+  min-width: auto;
+  max-width: 100%;
+}
+
+.#{$namespace}-select--full,
+.#{$namespace}-select--wide {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+
+.#{$namespace}-select--inline {
+  @include set-background($select-inline-background);
+
+  width: auto;
+  max-width: unset;
+  height: rhythm(1);
+  min-height: rhythm(1);
+  margin: 0;
+  padding: 0 20px 0 5px;
+  color: $select-inline-title-color;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}

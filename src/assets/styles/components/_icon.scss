@@ -1,0 +1,88 @@
+@mixin generate-icon-sizes {
+  @each $key, $value in $icon-sizes {
+    .#{$namespace}-icon--#{$key} {
+      height: map-get($icon-sizes, $key);
+
+      > img,
+      > svg {
+        width: map-get($icon-sizes, $key);
+        height: map-get($icon-sizes, $key);
+      }
+    }
+  }
+}
+
+
+.#{$namespace}-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  line-height: $base-line-height;
+  height: $base-line-height;
+
+  font-size: inherit;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  vertical-align: top;
+
+  > img,
+  > svg {
+    width: map-get($icon-sizes, large);
+    height: map-get($icon-sizes, normal);
+
+    > g {
+      fill: #ffffff;
+    }
+  }
+
+  &[aria-busy='true'] {
+    animation: pulsate 2s infinite linear;
+  }
+
+  &:not(&--color) {
+    > svg g,
+    > svg path {
+      //fill: inherit;
+    }
+  }
+
+  &--inline {
+    display: inline;
+  }
+
+  &--clickable {
+    cursor: pointer;
+  }
+
+  &--left {
+    margin: 0 0 0 1ex;
+  }
+
+  &--right {
+    margin: 0 1ex 0 0;
+  }
+
+  &--both {
+    margin: 0 1ex;
+  }
+
+  &--top {
+    height: auto;
+    vertical-align: text-top;
+  }
+
+  &--middle {
+    height: auto;
+    vertical-align: middle;
+  }
+
+  &--bottom {
+    height: auto;
+    vertical-align: text-bottom;
+  }
+}
+
+
+@include generate-icon-sizes;

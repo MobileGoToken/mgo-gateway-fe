@@ -1,0 +1,95 @@
+$input-group-radius: 4px !default;
+
+$input-group-prefix-size: rhythm(1.75) !default;
+$input-group-prefix-top: 0 !default;
+$input-group-prefix-bottom: 0 !default;
+$input-group-prefix-left: 0 !default;
+$input-group-prefix-padding: rhythm(1.75) !default;
+
+$input-group-sufix-size: rhythm(1.75) !default;
+$input-group-sufix-top: 0 !default;
+$input-group-sufix-right: 0 !default;
+$input-group-sufix-bottom: 0 !default;
+$input-group-sufix-padding: rhythm(1.75) !default;
+
+
+
+.#{$namespace}-input-group {
+  position: relative;
+  overflow: visible;
+
+  &--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+  }
+
+  &__prefix,
+  &__sufix,
+  &__addon {
+    position: absolute;
+  }
+
+  &:hover {
+    .#{$namespace}-input {
+      @extend .#{$namespace}-input--hover;
+    }
+  }
+}
+
+
+.#{$namespace}-input-group__prefix,
+.#{$namespace}-input-group__sufix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  //height: 100%;
+  overflow: hidden;
+  z-index: 1;
+
+  > .#{$namespace}-button {
+    margin: 0;
+
+    &:focus {
+      @include focus(null);
+    }
+  }
+}
+
+
+.#{$namespace}-input-group__prefix {
+  top: $input-group-prefix-top;
+  left: $input-group-prefix-left;
+  bottom: $input-group-prefix-bottom;
+  min-width: $input-group-prefix-size;
+  border-top-left-radius: $input-group-radius;
+  border-bottom-left-radius: $input-group-radius;
+
+  > .#{$namespace}-button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+
+.#{$namespace}-input-group__field {
+  margin: 0;
+  padding: 0;
+}
+
+
+.#{$namespace}-input-group__sufix {
+  top: $input-group-sufix-top;
+  right: $input-group-sufix-right;
+  bottom: $input-group-sufix-bottom;
+  min-width: $input-group-sufix-size;
+  border-top-right-radius: $input-group-radius;
+  border-bottom-right-radius: $input-group-radius;
+
+  > .#{$namespace}-button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+

@@ -1,0 +1,60 @@
+$avatar-width: rhythm(3) !default;
+$avatar-height: rhythm(3) !default;
+$avatar-radius: 100% !default;
+$avatar-border: (
+  radius: 100%,
+) !default;
+
+$avatar-active-background: rgba(map-get($background-colors, 'hover'), .1) !default;
+$avatar-active-shadow: 0 0 5px 2px rgba(map-get($background-colors, 'hover'), .5) !default;
+$avatar-active-border: (
+  width: 1px,
+  style: solid,
+  color: map-get($border-colors, 'pill'),
+) !default;
+
+$avatar-small-size: rhythm(2) !default;
+$avatar-medium-size: rhythm(5) !default;
+$avatar-large-size: rhythm(7) !default;
+
+
+.#{$namespace}-avatar {
+  @include set-border($avatar-border);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $avatar-width;
+  height: $avatar-height;
+  overflow: hidden;
+  //border-radius: $avatar-radius;
+
+  > img,
+  > svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &--active {
+    @include set-border($avatar-active-border);
+
+    background: $avatar-active-background;
+    box-shadow: $avatar-active-shadow;
+  }
+
+  &--small {
+    width: $avatar-small-size;
+    height: $avatar-small-size;
+  }
+
+  &--medium {
+    width: $avatar-medium-size;
+    height: $avatar-medium-size;
+  }
+
+  &--large {
+    width: $avatar-large-size;
+    height: $avatar-large-size;
+  }
+}

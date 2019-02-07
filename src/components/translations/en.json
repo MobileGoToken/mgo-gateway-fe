@@ -1,0 +1,15 @@
+{
+  "signIn": "Sign in",
+  "noInvoiceData": "No invoice data",
+  "copyClipboard": "Copy address to clipboard",
+  "totalBalance": "Total balance",
+  "numberOfAddresses": "No. of addresses",
+  "address": "Address",
+  "mnemonic_text": "Please enter your 12-word mnemonic phrase in the correct order to access your wallet.",
+  "mnemonic_invalid": "Invalid mnemonic entered.",
+  "validatorsRequired": "Required",
+  "english": "English",
+  "russian": "Русский",
+  "chinese": "中文",
+  "korean": "한국어"
+}

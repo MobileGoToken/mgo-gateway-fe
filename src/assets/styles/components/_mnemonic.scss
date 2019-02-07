@@ -1,0 +1,26 @@
+$mnemonic-title-font-family: $ui-font-family !default;
+
+.#{$namespace}-mnemonic {
+  margin-bottom: rhythm(.5);
+
+  &__title {
+    font-family: $mnemonic-title-font-family;
+    max-width: 340px;
+    margin: rhythm(1) auto rhythm(.75);
+    color: #a5b6ca;
+    line-height: 1.57;
+  }
+
+  &__fields {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 rhythm(-.5);
+  }
+
+  .#{$namespace}-form-group {
+    flex-grow: 1;
+    width: 25%;
+    margin: rhythm(.5) rhythm(.5);
+  }
+
+}

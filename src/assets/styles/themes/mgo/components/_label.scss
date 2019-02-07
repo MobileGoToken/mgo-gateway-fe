@@ -1,0 +1,14 @@
+$label-font-family: $ui-font-family;
+$label-font-size: map-get($font-sizes, normal);
+$label-font-weight: normal;
+$label-spacing: 12px;
+$label-spacing-small: 8px;
+$label-selected-font-weight: 300;
+$label-color: map-get($text-colors, dark);
+$label-color-togglable: map-get($text-colors, default);
+
+$label-inline-hint-padding: 0 0 0 28px;
+$label-inline-message-padding: 0 0 0 28px;
+
+$label-checkbox-hint-padding: 0 0 0 26px;
+$label-switch-hint-padding: 0 0 0 40px;

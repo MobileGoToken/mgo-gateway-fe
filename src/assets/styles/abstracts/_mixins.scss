@@ -1,0 +1,591 @@
+///
+/// Since the current way to qualify a class from within its ruleset is quite
+/// ugly, here is a mixin providing a friendly API to do so.
+///
+/// @author Hugo Giraudel
+/// @param {string} $element-selector - Element selector
+///
+@mixin qualify($element-selector) {
+  @at-root #{$element-selector + &} {
+    @content;
+  }
+}
+
+
+///
+/// @alias qualify
+///
+@mixin when-is($args...) {
+  @include qualify($args...) {
+    @content;
+  }
+}
+
+
+///
+/// Sets the default component styles
+///
+/// {string} $display - CSS display property
+///
+@mixin component($display: inline-block) {
+  display: $display;
+  box-sizing: border-box;
+}
+
+
+///
+/// Add ellipsis
+///
+/// {bool} $max-width - If specified, sets max-width
+///
+@mixin ellipsis($max-width: false) {
+  @if $max-width { max-width: $max-width; }
+
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+///
+/// Animate appearance
+///
+/// {number} $timeout
+///
+@mixin fade-in($timeout: 200ms) {
+  animation: fade-in $timeout ease-in forwards;
+}
+
+
+///
+/// Animate disappearance
+///
+/// {number} $timeout
+///
+@mixin fade-out($timeout: 200ms) {
+  animation: fade-out $timeout ease-out forwards;
+}
+
+
+///
+/// Set or removes a focus of an element by applying a box-shadow
+///
+/// @param {map|list|null} $options - box-shadow options (inset x y blur spread color)
+/// @requires $focus-shadow
+///
+@mixin focus($options: null) {
+  $options: if(not $options, none, $options);
+
+  outline: none;
+  text-decoration: none;
+
+  @if type-of($options) != 'map' {
+    box-shadow: $options;
+  }
+  @else {
+    $focus-shadow: if($focus-shadow != null, $focus-shadow, (
+      inset: false,
+      x: 0,
+      y: 0,
+      blur: 1px,
+      spread: 1px,
+      color: color('blue'),
+    ));
+
+    $inset: if(map-has-key($options, inset), map-get($options, inset), map-get($focus-shadow, inset));
+    $x: if(map-has-key($options, x), map-get($options, x), map-get($focus-shadow, x));
+    $y: if(map-has-key($options, y), map-get($options, y), map-get($focus-shadow, y));
+    $blur: if(map-has-key($options, blur), map-get($options, blur), map-get($focus-shadow, blur));
+    $spread: if(map-has-key($options, spread), map-get($options, spread), map-get($focus-shadow, spread));
+    $color: if(map-has-key($options, inset), map-get($options, inset), map-get($focus-shadow, color));
+
+    box-shadow: #{if($inset == true, inset, '')} $x $y $blur $spread $color;
+  }
+}
+
+
+///
+/// Sets or removes a background
+///
+/// @param {map|list|null} $background - Map of background options (color, image, repeat, position, size, clip, origin)
+///
+@mixin set-background($background: null) {
+  $background: if(not $background, none, $background);
+
+  @if type-of($background) != map {
+    background: $background;
+  }
+  @else {
+    @if map-has-key($background, color) {
+      background-color: map-get($background, color);
+    }
+    @if map-has-key($background, image) {
+      background-image: map-get($background, image);
+    }
+    @if map-has-key($background, repeat) {
+      background-repeat: map-get($background, repeat);
+    }
+    @if map-has-key($background, position) {
+      background-position: map-get($background, position);
+    }
+    @if map-has-key($background, size) {
+      background-size: map-get($background, size);
+    }
+    @if map-has-key($background, clip) {
+      background-clip: map-get($background, clip);
+    }
+    @if map-has-key($background, origin) {
+      background-origin: map-get($background, origin);
+    }
+  }
+}
+
+
+///
+/// Sets border radius
+///
+/// @param {number} $radius Border radius
+/// @param {string} $side Border sides
+/// @requires $default-border-radius
+///
+@mixin set-radius($radius, $side: all) {
+  $radius: if($radius, $radius, if($default-border-radius, $default-border-radius, 4px));
+
+  @if $side == top {
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+  }
+  @else if $side == right {
+    border-top-right-radius: $radius;
+    border-bottom-right-radius: $radius;
+  }
+  @else if $side == bottom {
+    border-bottom-right-radius: $radius;
+    border-bottom-left-radius: $radius;
+  }
+  @else if $side == left {
+    border-top-left-radius: $radius;
+    border-bottom-left-radius: $radius;
+  }
+  @else {
+    border-radius: $radius;
+  }
+}
+
+
+///
+/// Sets a border
+///
+/// @param {map|list} $border - Border options (side, width, style, color, radius, image)
+/// @param {list|number} $padding - Padding list or a single value
+///
+@mixin set-border($border, $padding: null) {
+  $side: all;
+
+  @if (type-of($border) == map) {
+    $side: if(map-has-key($border, side), map-get($border, side), all);
+  }
+
+  $sufix: if(index($side, all) != null, '', '-' + $side);
+
+  // if a simple border is passed, just apply it
+  @if type-of($border) != map {
+    border#{$sufix}: $border;
+
+    @if $padding != null {
+      @if type-of($padding) != map {
+        padding: $padding;
+      }
+      @else {
+        $padding: unify-padding($padding);
+        //@debug $padding;
+        $top: nth($padding, 1);
+        $right: nth($padding, 2);
+        $bottom: nth($padding, 3);
+        $left: nth($padding, 4);
+
+        padding: rhythm($top) rhythm($right) rhythm($bottom) rhythm($left);
+      }
+    }
+  }
+  // if a border as a map is passed
+  @else {
+    // no padding
+    @if $padding == null {
+      @if map-has-key($border, width) {
+        border#{$sufix}-width: map-get($border, width);
+      }
+      @if map-has-key($border, style) {
+        border#{$sufix}-style: map-get($border, style);
+      }
+      @if map-has-key($border, color) {
+        border#{$sufix}-color: map-get($border, color);
+      }
+      @if map-has-key($border, radius) {
+        border#{$sufix}-radius: map-get($border, radius);
+      }
+      @if map-has-key($border, image) {
+        border-image: map-get($border, image);
+      }
+    }
+    // padding is provided, call rhythm-borders
+    @else {
+      $padding: unify-padding($padding);
+      $top: nth($padding, 1);
+      $right: nth($padding, 2);
+      $bottom: nth($padding, 3);
+      $left: nth($padding, 4);
+      $width: if(map-has-key($border, width), map-get($border, width), 0);
+
+      // all 4 borders
+      @if index($side, all) != null {
+        @if $width == 0 {
+          border-width: 0;
+          padding: rhythm($top);
+        }
+        @else {
+          @include rhythm-borders($width, $top);
+        }
+
+        padding-right: rhythm($right);
+        padding-left: rhythm($left);
+
+        @if $bottom != $top {
+          padding-bottom: rhythm($bottom - to-lines($width));
+        }
+
+        @if map-has-key($border, style) {
+          border-style: map-get($border, style);
+        }
+        @if map-has-key($border, color) {
+          border-color: map-get($border, color);
+        }
+      }
+
+      // separate border styling
+      @else {
+        @if index($side, top) != null {
+          @include apply-side-rhythm-border(top, $width, $top);
+
+          padding-right: rhythm($right);
+          padding-left: rhythm($left);
+
+          @if index($side, bottom) == null {
+            padding-bottom: rhythm($bottom);
+          }
+
+          @if map-has-key($border, style) {
+            border-top-style: map-get($border, style);
+          }
+          @if map-has-key($border, color) {
+            border-top-color: map-get($border, color);
+          }
+        }
+
+        @if index($side, right) != null {
+          @include apply-side-rhythm-border(right, $width, $right);
+
+          padding-left: rhythm($left);
+
+          @if index($side, top) == null {
+            padding-top: rhythm($top);
+          }
+          @if index($side, bottom) == null {
+            padding-bottom: rhythm($bottom);
+          }
+
+          @if map-has-key($border, style) {
+            border-right-style: map-get($border, style);
+          }
+          @if map-has-key($border, color) {
+            border-right-color: map-get($border, color);
+          }
+        }
+
+        @if index($side, bottom) != null {
+          @include apply-side-rhythm-border(bottom, $width, $bottom);
+
+          padding-right: rhythm($right);
+          padding-left: rhythm($left);
+
+          @if index($side, top) == null {
+            padding-top: rhythm($top);
+          }
+
+          @if map-has-key($border, style) {
+            border-bottom-style: map-get($border, style);
+          }
+          @if map-has-key($border, color) {
+            border-bottom-color: map-get($border, color);
+          }
+        }
+
+        @if index($side, left) != null {
+          @include apply-side-rhythm-border(left, $width, $left);
+
+          padding-right: rhythm($right);
+
+          @if index($side, top) == null {
+            padding-top: rhythm($top);
+          }
+          @if index($side, bottom) == null {
+            padding-bottom: rhythm($bottom);
+          }
+
+          @if map-has-key($border, style) {
+            border-left-style: map-get($border, style);
+          }
+          @if map-has-key($border, color) {
+            border-left-color: map-get($border, color);
+          }
+        }
+      }
+
+      // apply border-radius
+      @if map-has-key($border, radius) {
+        @include set-radius(map-get($border, radius), $side);
+        //border-radius: map-get($border, radius);
+      }
+
+      // apply border-image
+      @if map-has-key($border, image) {
+        border-image: map-get($border, image);
+      }
+    }
+  }
+}
+
+
+///
+/// Stripe builder
+///
+/// @author Hugo Giraudel
+/// @param {number} $direction - Gradient direction
+/// @param {list} $colors - List of colors
+/// @output `background-image` if several colors, `background-color` if only one
+///
+@mixin stripes($direction, $colors) {
+  $length: length($colors);
+
+  @if $length > 1 {
+    $stripes: ();
+
+    @for $i from 1 through $length {
+      $stripe: (100% / $length) * ($i - 1);
+
+      @if $i > 1 {
+        $stripes: append($stripes, nth($colors, $i - 1) $stripe, comma);
+      }
+
+      $stripes: append($stripes, nth($colors, $i) $stripe, comma);
+    }
+
+    background-image: linear-gradient($direction, $stripes);
+  } @else if $length == 1 {
+    background-color: $colors;
+  }
+}
+
+
+///
+/// Triangle helper mixin
+///
+/// @param {string} $direction - Triangle direction, either `top`, `right`, `bottom` or `left`
+/// @param {color} $color [currentcolor] - Triangle color
+/// @param {number} $size [1em] - Triangle size
+///
+@mixin triangle($direction, $color: currentcolor, $size: 1em) {
+  @if not index(top right bottom left, $direction) {
+    @error 'Direction must be either `top`, `right`, `bottom` or `left`.';
+  }
+
+  $perpendicular-borders: $size solid transparent;
+
+  display: block;
+  width: 0;
+  height: 0;
+  content: '';
+  z-index: 2;
+  border-#{opposite-position($direction)}: ($size * 1.5) solid $color;
+
+  @if $direction == top or $direction == bottom {
+    border-left:   $perpendicular-borders;
+    border-right:  $perpendicular-borders;
+  } @else if $direction == right or $direction == left {
+    border-bottom: $perpendicular-borders;
+    border-top:    $perpendicular-borders;
+  }
+}
+
+
+///
+/// New mixing for arrows
+///
+/// @param {string} $direction - Triangle direction, either `top`, `right`, `bottom` or `left`
+/// @param {color} $color [currentcolor] - Triangle color
+/// @param {number} $size [1em] - Triangle size
+///
+@mixin arrow($direction, $color, $size) {
+  content: '';
+  display: block;
+  height: 0;
+  width: 0;
+
+  @if $direction == 'top' {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-bottom: $size solid $color;
+  } @else if $direction == 'right' {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-left: $size solid $color;
+  } @else if $direction == 'bottom' {
+    border-top: $size solid $color;
+    border-right: $size solid transparent;
+    border-left: $size solid transparent;
+  } @else if $direction == 'left' {
+    border-top: $size solid transparent;
+    border-right: $size solid $color;
+    border-bottom: $size solid transparent;
+  } @else if $direction == 'top-left' {
+    border-top: $size solid $color;
+    border-right: $size solid transparent;
+  } @else if $direction == 'top-right' {
+    border-top: $size solid $color;
+    border-left: $size solid transparent;
+  } @else if $direction == 'bottom-left' {
+    border-bottom: $size solid $color;
+    border-right: $size solid transparent;
+  } @else if $direction == 'bottom-right' {
+    border-bottom: $size solid $color;
+    border-left: $size solid transparent;
+  }
+}
+
+
+///
+/// Create global CSS variables from Sass ones
+///
+/// @param {string} $name - CSS variable name prefix
+/// @param {*|map} $value - Value or a map of values
+/// @requires $namespace
+///
+@mixin create-global($name, $value) {
+  $result: ();
+  $prefix: if($namespace, '#{$namespace}-', '');
+
+  @if type-of($value) == map {
+    @each $name-1, $value-1 in $value {
+      @if type-of($value-1) == map {
+        @each $name-2, $value-2 in $value-1 {
+          $result: map-merge($result, (
+            #{inspect('--#{$prefix}#{$name}--#{$name-1}--#{$name-2}')}: #{inspect($value-2)}
+          ));
+        }
+      }
+      @else {
+        $result: map-merge($result, (
+          #{inspect('--#{$prefix}#{$name}--#{$name-1}')}: #{inspect($value-1)}
+        ));
+      }
+    }
+  }
+  @else {
+    $result: (#{inspect('--#{$prefix}#{$name}')}: #{$value});
+  }
+
+  :root {
+    @each $var, $val in $result {
+      #{$var}: #{$val};
+    }
+  }
+}
+
+
+///
+/// Responsive breakpoint manager
+///
+/// @param {string} $breakpoint - Breakpoint
+/// @requires $breakpoints
+///
+@mixin respond-to($breakpoint) {
+  $raw-query: map-get($breakpoints, $breakpoint);
+
+  @if $raw-query {
+    $query: if(type-of($raw-query) == 'string', unquote($raw-query), inspect($raw-query));
+
+    @media #{$query} {
+      @content;
+    }
+  } @else {
+    @error 'No value found for `#{$breakpoint}`. '
+    + 'Please make sure it is defined in `$breakpoints` map.';
+  }
+}
+
+
+///
+/// Mixin to manage responsive breakpoints
+///
+/// @param {string} $breakpoint - Breakpoint name
+/// @require $breakpoints
+///
+@mixin responsive($screen-sizes...) {
+  $breakpoints: if($breakpoints, $breakpoints, (
+    'small': (min-width: 320px, max-width: 767px),
+    'medium': (min-width: 768px, max-width: 1279px),
+    'large': (min-width: 1280px),
+  ));
+
+  $keys: map-keys($breakpoints);
+
+  @if $screen-sizes == null or length($screen-sizes) == 0 {
+    //@debug "Please provide at least one of the available breakpoints: #{$keys}";
+    @error 'Please provide at least one of the available breakpoints: #{$keys}';
+  }
+
+  @each $size in $screen-sizes {
+    $bounds: map-get($breakpoints, $size);
+
+    // if the key doesn't exist in the map
+    @if not $bounds {
+      @error 'Unfortunately, no value could be retrieved for `#{$size}`. '
+      + 'Available breakpoints are: `#{$keys}`.';
+    }
+
+    $bounds: map-get($breakpoints, $size);
+    $condition: null;
+    $min: null;
+    $max: null;
+
+    @if map-has-key($bounds, min-width) {
+      $min: (min-width: map-get($bounds, min-width));
+    }
+
+    @if map-has-key($bounds, max-width) {
+      $max: (max-width: map-get($bounds, max-width));
+    }
+
+    @if $min and not $max {
+      $condition: #{inspect($min)};
+    }
+    @else if not $min and $max {
+      $condition: #{inspect($max)};
+    }
+    @else if $min and $max {
+      $condition: #{inspect($min)} and #{inspect($max)};
+    }
+    @else {
+      @warn 'No min-width or max-width defined.';
+    }
+    //@debug inspect($condition);
+
+    // Prints a media query based on the value
+    @media #{inspect($condition)} {
+      @content;
+    }
+  }
+}
+
+@import "../vendors/compass-mixins/compass/css3";

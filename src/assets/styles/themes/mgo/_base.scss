@@ -1,0 +1,42 @@
+///
+/// base/common.scss
+///
+$window-background: (
+  color: map-get($background-colors, window),
+);
+
+
+$focus-shadow: (
+  inset: false,
+  x: 0,
+  y: 0,
+  blur: 1px,
+  spread: 1px,
+  color: color('mint'),
+);
+
+
+$scrollbar-size: map-get(map-get($application, scrollbar), size);
+$scrollbar-background: rgba(255, 255, 255, .025);
+$scrollbar-thumb: rgba(255, 255, 255, .025);
+$scrollbar-thumb-hover: rgba(255, 255, 255, .075);
+
+
+$icon-sizes: (
+  'tiny': 10px,
+  'small': 15px,
+  'normal': 20px,
+  'large': 30px,
+  'toolbar': 40px,
+  'thumbnail': 80px,
+);
+
+
+$html-hr-border: 1px solid color('white', alpha, 10);
+
+
+@import '../../base/normalize';
+@import 'base/fonts';
+@import '../../base/icons';
+@import 'base/typography';
+@import '../../base/common';

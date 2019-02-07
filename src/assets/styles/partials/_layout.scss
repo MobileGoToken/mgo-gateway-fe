@@ -1,0 +1,174 @@
+///
+/// Layout classes
+///
+/// There are some workarounds that we had to implement in order to make the flexbox
+/// behave the same in all the major browsers:
+///
+/// @see: http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox
+/// @see: https://github.com/philipwalton/flexbugs
+///
+
+
+$layout-sidebar-width: 250px !default;
+
+
+/// Layout classes
+
+
+.#{$namespace}-layout {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: stretch;
+  align-content: stretch;
+  flex-direction: column;
+}
+
+
+/// Layout modifiers
+
+.#{$namespace}-layout--vr,
+.#{$namespace}-layout--vertical {
+  flex-direction: column;
+  min-height: 0;
+}
+
+
+.#{$namespace}-layout--hr,
+.#{$namespace}-layout--horizontal {
+  flex-direction: row;
+  min-width: 0;
+}
+
+
+.#{$namespace}-layout--center {
+  align-self: center;
+  margin: 0 auto;
+  max-width: 960px;
+}
+
+
+.#{$namespace}-layout--wrap {
+  flex-wrap: wrap;
+}
+
+
+.#{$namespace}-layout--even {
+  justify-content: space-around;
+}
+
+
+.#{$namespace}-layout--justify {
+  justify-content: space-between;
+}
+
+
+.#{$namespace}-layout--left {
+  order: -1;
+}
+
+
+.#{$namespace}-layout--right {
+  order: 1;
+}
+
+
+.#{$namespace}-layout--auto,
+.#{$namespace}-layout.#{$namespace}-layout--auto {
+  flex: auto;
+}
+
+
+.#{$namespace}-layout.#{$namespace}-layout--scroll,
+.#{$namespace}-layout__content.#{$namespace}-layout--scroll,
+.#{$namespace}-layout--scroll {
+  overflow: auto;
+}
+
+
+.#{$namespace}-layout.#{$namespace}-layout--cutoff,
+.#{$namespace}-layout__content.#{$namespace}-layout--cutoff,
+.#{$namespace}-layout--cutoff {
+  overflow: hidden;
+}
+
+
+.#{$namespace}-layout.#{$namespace}-layout--visible,
+.#{$namespace}-layout__content.#{$namespace}-layout--visible,
+.#{$namespace}-layout--visible {
+  overflow: visible;
+}
+
+
+/// Layout content modifiers
+
+
+.#{$namespace}-layout--min,
+.#{$namespace}-layout__content--min {
+  flex: 0 0 auto;
+}
+
+.#{$namespace}-layout--max,
+.#{$namespace}-layout__content--max {
+  width: 100%;
+}
+
+.#{$namespace}-layout--half,
+.#{$namespace}-layout__content--half {
+  width: 50%;
+  max-width: 50%;
+}
+
+.#{$namespace}-layout--third,
+.#{$namespace}-layout__content--third {
+  width: 33%;
+  max-width: 33%;
+}
+
+.#{$namespace}-layout--quarter,
+.#{$namespace}-layout__content--quarter {
+  width: 25%;
+  max-width: 25%;
+}
+
+.#{$namespace}-layout__content--center {
+  @extend .#{$namespace}-layout--center;
+}
+
+
+/// Layout blocks
+
+
+.#{$namespace}-layout__header,
+.#{$namespace}-layout__toolbar,
+.#{$namespace}-layout__footer {
+  flex: 0 0 auto;
+}
+
+
+.#{$namespace}-layout__sidebar {
+  flex: 0 0 auto;
+  order: -1;
+  width: $layout-sidebar-width;
+}
+
+
+.#{$namespace}-layout__content {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+
+.#{$namespace}-layout--page {
+  width: 100vw;
+  height: 100vh;
+}
+
+
+.#{$namespace}-layout--container {
+  flex: 1 0 auto;
+  display: flex;
+  height: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+

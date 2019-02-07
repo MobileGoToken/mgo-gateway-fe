@@ -1,0 +1,824 @@
+@import '../vendors/compass-mixins/compass/functions';
+
+
+///
+/// A collection of function for advanced type checking
+///
+/// @author Hugo Giraudel
+///
+@function is-number($value) {
+  @return type-of($value) == 'number';
+}
+
+@function is-time($value) {
+  @return is-number($value) and index('ms' 's', unit($value)) != null;
+}
+
+@function is-duration($value) {
+  @return is-time($value);
+}
+
+@function is-angle($value) {
+  @return is-number($value) and index('deg' 'rad' 'grad' 'turn', unit($value)) != null;
+}
+
+@function is-frequency($value) {
+  @return is-number($value) and index('Hz' 'kHz', unit($value)) != null;
+}
+
+@function is-integer($value) {
+  @return is-number($value) and round($value) == $value;
+}
+
+@function is-relative-length($value) {
+  @return is-number($value) and index('em' 'ex' 'ch' 'rem' 'vw' 'vh' 'vmin' 'vmax', unit($value)) != null;
+}
+
+@function is-absolute-length($value) {
+  @return is-number($value) and index('cm' 'mm' 'in' 'px' 'pt' 'pc', unit($value)) != null;
+}
+
+@function is-percentage($value) {
+  @return is-number($value) and unit($value) == '%';
+}
+
+@function is-length($value) {
+  @return is-relative-length($value) or is-absolute-length($value);
+}
+
+@function is-resolution($value) {
+  @return is-number($value) and index('dpi' 'dpcm' 'dppx', unit($value)) != null;
+}
+
+@function is-position($value) {
+  @return is-length($value) or is-percentage($value) or index('top' 'right' 'bottom' 'left' 'center', $value) != null;
+}
+
+@function to-string($value) {
+  @return inspect($value);
+}
+
+@function to-bool($value) {
+  @return not(not $value or $value == '' or $value == 0 or $value == ());
+}
+
+
+///
+/// @author Hugo Giraudel
+///
+/// @param {*} $value - Value to convert
+/// @param {string} $keep - 'keys' | 'values' | 'both'
+/// @return {list} - A list of values
+///
+@function to-list($value, $keep: 'both') {
+  //@return if(type-of($value) != list, ($value,), $value);
+  $keep: if(index('keys' 'values', $keep), $keep, 'both');
+
+  @if type-of($value) == 'map' {
+    $keys: ();
+    $values: ();
+
+    @each $key, $val in $value {
+      $keys: append($keys, $key);
+      $values: append($values, $val);
+    }
+
+    @if $keep == 'keys' {
+      @return $keys;
+    } @else if $keep == 'values' {
+      @return $values;
+    } @else {
+      @return zip($keys, $values);
+    }
+  }
+
+  @return if(type-of($value) != 'list', ($value,), $value);
+}
+
+
+///
+/// @author Hugo Giraudel
+///
+/// @param {*} $value - Value to convert
+/// @return {map} - Ordinal map
+///
+@function to-map($value) {
+  @return if(type-of($value) != map, (1: $value), $value);
+}
+
+
+///
+/// Add `$unit` to `$value`
+///
+/// @author Hugo Giraudel
+/// @param {number} $value - Value to add unit to
+/// @param {string} $unit - String representation of the unit
+/// @return {number} - `$value` expressed in `$unit`
+///
+@function to-length($value, $unit) {
+  $units: (
+    'px': 1px,
+    'pt': 1pt,
+    'pc': 1pc,
+    'cm': 1cm,
+    'mm': 1mm,
+    'in': 1in,
+    '%': 1%,
+    'em': 1em,
+    'ex': 1ex,
+    'ch': 1ch,
+    'rem': 1rem,
+    'vw': 1vw,
+    'vh': 1vh,
+    'vmin': 1vmin,
+    'vmax': 1vmax,
+  );
+
+  @if not index(map-keys($units), $unit) {
+    @error 'Invalid unit `#{$unit}`.';
+  }
+
+  @return $value * map-get($units, $unit);
+}
+
+
+///
+/// Convert one unit into another
+///
+/// @author Hugo Giraudel
+/// @param {number} $value - Initial value
+/// @param {string} $unit - Desired unit
+/// @return {number}
+/// @throw Error if `$unit` does not exist or if units are incompatible.
+///
+@function convert-unit($value, $unit) {
+  $units: (
+    'px': 0px,
+    'cm': 0cm,
+    'mm': 0mm,
+    '%': 0%,
+    'ch': 0ch,
+    'in': 0in,
+    'em': 0em,
+    'rem': 0rem,
+    'pt': 0pt,
+    'pc': 0pc,
+    'ex': 0ex,
+    'vw': 0vw,
+    'vh': 0vh,
+    'vmin': 0vmin,
+    'vmax': 0vmax,
+    'deg': 0deg,
+    'turn': 0turn,
+    'rad': 0rad,
+    'grad': 0grad,
+    's': 0s,
+    'ms': 0ms,
+    'Hz': 0Hz,
+    'kHz': 0kHz,
+    'dppx': 0dppx,
+    'dpcm': 0dpcm,
+    'dpi': 0dpi,
+  );
+
+  @if map-has-key($units, $unit) {
+    @return map-get($units, $unit) + $value;
+  }
+
+  @error 'Unknown unit `#{$unit}`.';
+}
+
+
+///
+/// Casts a string into a number
+///
+/// @author Hugo Giraudel
+/// @param {string | number} $value - Value to be parsed
+/// @return {number}
+///
+@function to-number($value) {
+  @if type-of($value) == 'number' {
+    @return $value;
+  }
+  @else if type-of($value) != 'string' {
+    @error 'Value for `to-number` should be a number or a string.';
+  }
+
+  $result: 0;
+  $digits: 0;
+  $minus: str-slice($value, 1, 1) == '-';
+  $numbers: ('0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9);
+
+  @for $i from if($minus, 2, 1) through str-length($value) {
+    $character: str-slice($value, $i, $i);
+
+    @if not (index(map-keys($numbers), $character) or $character == '.') {
+      @return to-length(if($minus, -$result, $result), str-slice($value, $i));
+    }
+
+    @if $character == '.' {
+      $digits: 1;
+    }
+    @else if $digits == 0 {
+      $result: $result * 10 + map-get($numbers, $character);
+    }
+    @else {
+      $digits: $digits * 10;
+      $result: $result + map-get($numbers, $character) / $digits;
+    }
+  }
+
+  @return if($minus, -$result, $result);
+}
+
+
+///
+/// Remove the unit of a length
+///
+/// @param {number} $number - Number to remove unit from
+/// @return {number} - Unitless number
+///
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+
+///
+/// Convert a value from px or rem to the value in line heights
+///
+/// @param {number} $value - Number in px/rem
+/// @return {number} - Unitless number in line heights
+///
+@function to-lines($value) {
+  $unit: unit($value);
+  $font-size: if($base-font-size, $base-font-size, 16px);
+  $line-height: if($base-line-height, $base-line-height, 24px);
+
+  @if unitless($value) {
+    @return $value;
+  }
+  @else if $unit == 'px' {
+    @return strip-unit($value) / strip-unit($line-height);
+  }
+  @else if $unit == 'rem' {
+    @return strip-unit($value) * strip-unit($font-size) / strip-unit($line-height);
+  }
+  @else {
+    @return strip-unit($value);
+  }
+}
+
+
+///
+/// Covert rems to pixels
+///
+/// @param {number} $value Value in rems
+/// @return {number} Value in pixels
+///
+@function to-px($value) {
+  $unit: unit($value);
+  $font-size: if($base-font-size, $base-font-size, 16px);
+  $line-height: if($base-line-height, $base-line-height, 24px);
+
+  @if $unit == '' or $unit == 'rem' {
+    @return to-length(strip-unit($value) * strip-unit($font-size), 'px');
+  }
+  @else {
+    @warn 'Please provide unitless value or value in rems.';
+  }
+
+  @return $unit;
+}
+
+
+///
+/// Converts function arguments to a list of values
+///
+/// @param {list} $vars - List of values
+/// @return {list}
+///
+@function compact($vars...) {
+  $list: ();
+
+  @each $var in $vars {
+    @if $var {
+      $list: append($list, $var, comma);
+    }
+  }
+
+  @return $list;
+}
+
+
+///
+/// Map deep get
+///
+/// @author Hugo Giraudel
+/// @param {map} $map - Map
+/// @param {list} $keys - Key chain
+/// @return {*} - Desired value
+///
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+
+  @return $map;
+}
+
+
+///
+/// Deep set function to set a value in nested maps
+///
+/// @author Hugo Giraudel
+/// @param {map} $map - Map
+/// @param {list} $keys -  Key chaine
+/// @param {*} $value - Value to assign
+/// @return {map}
+///
+@function map-deep-set($map, $keys, $value) {
+  $maps: ($map,);
+  $result: null;
+
+  // If the last key is a map already
+  // Warn the user we will be overriding it with $value
+  @if type-of(nth($keys, -1)) == 'map' {
+    @warn 'The last key you specified is a map; it will be overrided with `#{$value}`.';
+  }
+
+  // If $keys is a single key
+  // Just merge and return
+  @if length($keys) == 1 {
+    @return map-merge($map, ($keys: $value));
+  }
+
+  // Loop from the first to the second to last key from $keys
+  // Store the associated map to this key in the $maps list
+  // If the key doesn't exist, throw an error
+  @for $i from 1 through length($keys) - 1 {
+    $current-key: nth($keys, $i);
+    $current-map: nth($maps, -1);
+    $current-get: map-get($current-map, $current-key);
+    @if $current-get == null {
+      @error 'Key `#{$key}` doesn\'t exist at current level in map.';
+    }
+    $maps: append($maps, $current-get);
+  }
+
+  // Loop from the last map to the first one
+  // Merge it with the previous one
+  @for $i from length($maps) through 1 {
+    $current-map: nth($maps, $i);
+    $current-key: nth($keys, $i);
+    $current-val: if($i == length($maps), $value, $result);
+    $result: map-merge($current-map, ($current-key: $current-val));
+  }
+
+  // Return result
+  @return $result;
+}
+
+
+///
+/// Compute the maximum depth of a map
+///
+/// @param {map} $map
+/// @return {number} max depth of `$map`
+///
+@function map-depth($map) {
+  $level: 1;
+
+  @each $key, $value in $map {
+    @if type-of($value) == 'map' {
+      $level: max(map-depth($value) + 1, $level);
+    }
+  }
+
+  @return $level;
+}
+
+
+///
+/// Test if map got all `$keys` at first level
+///
+/// @author Hugo Giraudel
+/// @param {map} $map - Map
+/// @param {list} $keys - Keys to test
+/// @return {bool}
+///
+@function map-has-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @return false;
+    }
+  }
+
+  @return true;
+}
+
+
+///
+/// Test if map got all `$keys` nested with each others
+///
+/// @author Hugo Giraudel
+/// @param {map} $map - Map
+/// @param {list} $keys - Keys to test
+/// @return {bool}
+///
+@function map-has-nested-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @return false;
+    }
+    $map: map-get($map, $key);
+  }
+
+  @return true;
+}
+
+
+///
+/// An equivalent of `zip` function but for maps.
+/// Takes two lists, the first for keys, second for values.
+///
+/// @param {list} $keys - Keys for map
+/// @param {list} $values - Values for map
+/// @return {map} Freshly created map
+/// @see http://sass-lang.com/documentation/Sass/Script/Functions.html#zip-instance_method
+///
+@function map-zip($keys, $values) {
+  $l-keys: length($keys);
+  $l-values: length($values);
+  $min: min($l-keys, $l-values);
+  $map: ();
+
+  @if $l-keys != $l-values {
+    @warn 'There are #{$l-keys} key(s) for #{$l-values} value(s) in the map for `map-zip`. '
+    + 'Resulting map will only have #{$min} pairs.';
+  }
+
+  @if $min == 0 {
+    @return $map;
+  }
+
+  @for $i from 1 through $min {
+    $map: map-merge($map, (nth($keys, $i): nth($values, $i)));
+  }
+
+  @return $map;
+}
+
+
+///
+/// jQuery-style extend function
+/// About `map-merge()`:
+/// * only takes 2 arguments
+/// * is not recursive
+///
+/// @param {map} $map - first map
+/// @param {list} $maps - other maps
+/// @param {bool} $deep - recursive mode
+/// @return {map}
+///
+@function map-extend($map, $maps.../*, $deep */) {
+  $last: nth($maps, -1);
+  $deep: $last == true;
+  $max: if($deep, length($maps) - 1, length($maps));
+
+  // Loop through all maps in $maps...
+  @for $i from 1 through $max {
+    // Store current map
+    $current: nth($maps, $i);
+
+    // If not in deep mode, simply merge current map with map
+    @if not $deep {
+      $map: map-merge($map, $current);
+    } @else {
+      // If in deep mode, loop through all tuples in current map
+      @each $key, $value in $current {
+
+        // If value is a nested map and same key from map is a nested map as well
+        @if type-of($value) == 'map' and type-of(map-get($map, $key)) == 'map' {
+          // Recursive extend
+          $value: map-extend(map-get($map, $key), $value, true);
+        }
+
+        // Merge current tuple with map
+        $map: map-merge($map, ($key: $value));
+      }
+    }
+  }
+
+  @return $map;
+}
+
+
+///
+/// Get a random number between min and max
+///
+/// @param {number} $min - Lower boundary
+/// @param {number} $max - Upper boundary
+///
+@function rand($min: 0, $max: 1) {
+  $number: random();
+  $result: $min + $number * ($max - $min);
+
+  @return $result;
+}
+
+
+///
+/// Returns the opposite direction of each direction in a list
+///
+/// @author Hugo Giraudel
+/// @param {list} $directions - List of initial directions
+/// @return {list} - List of opposite directions
+///
+@function opposite-direction($directions) {
+  $opposite-directions: ();
+  $direction-map: (
+    'top':    'bottom',
+    'right':  'left',
+    'bottom': 'top',
+    'left':   'right',
+    'center': 'center',
+    'ltr':    'rtl',
+    'rtl':    'ltr'
+  );
+
+  @each $direction in $directions {
+    $direction: to-lower-case($direction);
+
+    @if map-has-key($direction-map, $direction) {
+      $opposite-directions: append($opposite-directions, unquote(map-get($direction-map, $direction)));
+    } @else {
+      @warn 'No opposite direction can be found for `#{$direction}`. Direction omitted.';
+    }
+  }
+
+  @return $opposite-directions;
+}
+
+
+///
+/// Helper function to replace characters in a string
+///
+/// @param {string} $string - String to search in
+/// @param {string} $search - Search term
+/// @param {string} $replace - Replace text
+/// @return {string}
+///
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @return if($index,
+    str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace),
+    $string
+  );
+}
+
+
+///
+/// Convert paddings into a list of 4 unitless parameters for usage in rhythm() function
+///
+/// @param {list|map} $padding - Padding parameters
+/// @return {list} - Unitless list of 4 parameters
+///
+@function unify-padding($padding) {
+  $top: 0;
+  $right: 0;
+  $bottom: 0;
+  $left: 0;
+
+  @if type-of($padding) == map {
+    $length: length(map-keys($padding));
+
+    @if $length != 4 {
+      @error 'Sorry, wrong number of arguments in $padding map (should be 4).';
+    }
+
+    $top: map-get($padding, top);
+    $right: map-get($padding, right);
+    $bottom: map-get($padding, bottom);
+    $left: map-get($padding, left);
+  }
+  @else {
+    $length: length($padding);
+
+    @if $length == 1 {
+      $top: $padding;
+      $right: $padding;
+      $bottom: $padding;
+      $left: $padding;
+    }
+    @else if $length == 2 {
+      $top: nth($padding, 1);
+      $right: nth($padding, 2);
+      $bottom: nth($padding, 1);
+      $left: nth($padding, 2);
+    }
+    @else if $length == 3 {
+      $top: nth($padding, 1);
+      $right: nth($padding, 2);
+      $bottom: nth($padding, 3);
+    }
+    @else {
+      $top: nth($padding, 1);
+      $right: nth($padding, 2);
+      $bottom: nth($padding, 3);
+      $left: nth($padding, 4);
+    }
+  }
+
+  @return to-lines($top) to-lines($right) to-lines($bottom) to-lines($left);
+}
+
+
+///
+/// Split a string by delimiter
+///
+/// @author Nenad Novaković (dvlden)
+/// @param {string} $string String to split
+/// @param {string} $delimiter String delimiter
+/// @return {list} List of strings
+///
+@function str-explode($string, $delimiter: '') {
+  @if type-of($string) != 'string' {
+    @error 'The argument $string: `#{$string}` is of incorrect type: `#{type-of($string)}`. Type of `String` is required!';
+  }
+  @else if type-of($delimiter) != 'string' {
+    @error 'The argument $string: `#{$string}` is of incorrect type: `#{type-of($string)}`. Type of `String` is required!';
+  }
+
+  $result: ();
+  $running: true;
+
+  @if str-length($delimiter) == 0 {
+    @for $i from 1 through str-length($string) {
+      $result: append($result, str-slice($string, $i, $i));
+    }
+
+    @return $result;
+  }
+
+  @while $running {
+    $index: str-index($string, $delimiter);
+
+    @if $index != null {
+      $item: str-slice($string, 1, ($index - 1));
+      $result: append($result, $item);
+      $string: str-slice($string, ($index + str-length($delimiter)));
+    }
+    @else {
+      $running: false;
+    }
+  }
+
+  @return append($result, $string);
+}
+
+
+///
+/// Function to change the attribute inside an SVG string
+//
+/// @param {string} $svg - SVG string to search in
+/// @param {string} $attribute - Attribute name
+/// @param {string} $value - New attribute value
+/// @return {string}
+///
+@function svg-change($svg, $attribute, $value) {
+  $allowed: ('fill', 'stroke', 'opacity');
+
+  @if not index($allowed, $attribute) {
+    @return $svg;
+  }
+
+  $attr: $attribute + '="';
+  $length: str-length($attr);
+  $start: str-index($svg, $attr);
+
+  @if $start == null {
+    @return $svg;
+  }
+
+  $first: str-slice($svg, 1, $start + $length - 1); // part before attribute
+  $rest: str-slice($svg, $start + $length);         // everything after that
+  $index: str-index($rest, '"');                    // index of closing "
+  $last: str-slice($rest, $index);                  // remaining of svg string
+
+  @return $first + $value + svg-change($last, $attribute, $value);
+}
+
+
+///
+/// Encode unsafe characters in order to use SVG within background-image
+///
+/// @param {string} $svg - SVG string to encode
+/// @param {bool} $safe - Safe encode
+/// @return {string}
+///
+@function svg-encode($svg, $safe: false) {
+  $encoded: '';
+  $slice: 2000;
+  $index: 0;
+  $loops: ceil(str-length($svg)/$slice);
+
+  //  Chunk up string in order to avoid "stack level too deep" error
+  @for $i from 1 through $loops {
+    $chunk: str-slice($svg, $index, $index + $slice - 1);
+
+    $chunk: str-replace($chunk, '"', '\'');
+    $chunk: str-replace($chunk, '%', '%25');
+    $chunk: str-replace($chunk, '&', '%26');
+    $chunk: str-replace($chunk, '#', '%23');
+    $chunk: str-replace($chunk, '{', '%7B');
+    $chunk: str-replace($chunk, '}', '%7D');
+    $chunk: str-replace($chunk, '<', '%3C');
+    $chunk: str-replace($chunk, '>', '%3E');
+
+    //  The maybe list
+    //  Keep size and compile time down (only add on documented fail)
+    @if $safe {
+      $chunk: str-replace($chunk, '|', '%7C');
+      $chunk: str-replace($chunk, '[', '%5B');
+      $chunk: str-replace($chunk, ']', '%5D');
+      $chunk: str-replace($chunk, '^', '%5E');
+      $chunk: str-replace($chunk, '`', '%60');
+      $chunk: str-replace($chunk, ';', '%3B');
+      $chunk: str-replace($chunk, '?', '%3F');
+      $chunk: str-replace($chunk, ':', '%3A');
+      $chunk: str-replace($chunk, '@', '%40');
+      $chunk: str-replace($chunk, '=', '%3D');
+    }
+
+    $encoded: #{$encoded}#{$chunk};
+    $index: $index + $slice;
+  }
+
+  @return $encoded;
+}
+
+
+///
+/// Function to create an optimized svg url
+///
+/// @param {map|string} $options|$svg - SVG options or SVG string
+/// @param {string|map} $svg|$options - SVG string or SVG options
+/// @return {string}
+///
+@function svg-url($args...) {
+  @if $args == null or length($args) == 0 or length($args) > 2 {
+    @error 'Invalid number of arguments: expected 1 or 2.';
+  }
+
+  $svg: '';
+  $options: null;
+
+  @if length($args) == 1 {
+    $svg: nth($args, 1);
+  }
+  @else {
+    @if index(('list', 'map', 'null'), type-of(nth($args, 1))) {
+      $options: nth($args, 1);
+      $svg: inspect(nth($args, 2));
+    }
+    @else {
+      $svg: inspect(nth($args, 1));
+      $options: nth($args, 2);
+    }
+  }
+
+  @if type-of($svg) != 'string' or not index(('list', 'map', 'null'), type-of($options)) {
+    @error 'Wrong parameter types: SVG should be of a `string` type, while options should be of a type `map`.';
+  }
+
+  //  Add missing namespace
+  @if not str-index($svg, 'xmlns') {
+    $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+  }
+
+  @if $options != null {
+    @each $attribute, $value in $options {
+      //@debug $attribute, $value;
+      $svg: svg-change($svg, $attribute, $value);
+    }
+
+    @if map-has-key($options, 'base64') and function-exists('__encode64') {
+      @return url('data:image/svg+xml;base64,#{__encode64($svg)}');
+    }
+  }
+
+  // add missing data descriptor
+  @if not str-index($svg, 'data:image/svg+xml') {
+    $svg: str-replace($svg, '<svg', 'data:image/svg+xml;utf8,<svg');
+  }
+
+  // encode unsafe characters
+  $encoded: svg-encode($svg);
+
+  @return url('#{$encoded}');
+}

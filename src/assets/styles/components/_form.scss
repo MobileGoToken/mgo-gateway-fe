@@ -1,0 +1,280 @@
+//@todo: Implement:
+// - vertical form
+// - floating form
+$form-header-margin: 0 0 rhythm(2) 0 !default;
+$form-footer-margin: rhythm(2) 0 0 0 !default;
+$form-messages-margin: 0 0 rhythm(2) 0 !default;
+
+$form-dialog-padding: rhythm(2.5) rhythm(3.5) !default;
+$form-dialog-background: map-get($background-colors, 'window') !default;
+$form-dialog-border: (
+  width: 1px,
+  style: solid,
+  color: transparent,
+  radius: $default-border-radius
+) !default;
+$form-dialog-shadow: 0 2px 6px 0 rgba(0,0,0, 0.3) !default;
+
+$form-sizes: (
+  small: 400px,
+  medium: 500px,
+  large: 600px
+) !default;
+
+
+/// Form
+
+.#{$namespace}-form {
+
+}
+
+
+.#{$namespace}-form--horizontal {
+
+}
+
+
+.#{$namespace}-form--vertical {
+
+}
+
+
+.#{$namespace}-form--flat {
+
+}
+
+
+/// Form sizes
+
+.#{$namespace}-form--small {
+  width: map-get($form-sizes, small);
+}
+
+.#{$namespace}-form--medium {
+  width: map-get($form-sizes, medium);
+}
+
+.#{$namespace}-form--large {
+  width: map-get($form-sizes, large);
+}
+
+
+  .#{$namespace}-form__header {
+    margin: $form-header-margin;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 0;
+    }
+
+    &--left {
+      text-align: left;
+    }
+
+    &--right {
+      text-align: right;
+    }
+
+    &--center {
+      text-align: center;
+    }
+  }
+
+  .#{$namespace}-form__body {
+    padding-left: map-get($focus-shadow, spread);
+    padding-right: map-get($focus-shadow, spread);
+  }
+
+  .#{$namespace}-form__footer {
+    margin: $form-footer-margin;
+
+    &--left {
+      text-align: left;
+    }
+
+    &--right {
+      text-align: right;
+    }
+
+    &--center {
+      text-align: center;
+    }
+  }
+
+  .#{$namespace}-form__messages {
+    margin: $form-messages-margin;
+
+    .#{$namespace}-notification {
+      margin: 0;
+    }
+  }
+
+
+// Dialog like look & feel
+
+.#{$namespace}-form--dialog {
+  @include set-background($form-dialog-background);
+  @include set-border($form-dialog-border, $form-dialog-padding);
+
+  box-shadow: $form-dialog-shadow;
+}
+
+
+// Fieldset
+
+fieldset {
+  border: 0;
+  padding: .01em 0 0 0;
+  margin: 0;
+  min-width: 0;
+}
+
+
+// Legend
+
+legend {
+  padding: 0;
+  display: table;
+}
+
+
+
+
+//$form-field-spacing: 1em !default;
+//$form-input-spacing: 1ex !default;
+//
+//$form-label-width: 210px !default;
+//$form-label-color: map-get($text-colors, 'normal') !default;
+//$form-label-required-content: '*' !default;
+//$form-label-required-color: map-get($text-colors,' error') !default;
+//$form-label-invalid-color: map-get($text-colors, 'error') !default;
+//
+//$form-checkbox-label-color: map-get($text-colors, 'normal') !default;
+//
+//$form-invalid-color: map-get($text-colors, 'error') !default;
+//$form-invalid-border-color: map-get($border-colors, 'error') !default;
+//
+//$form-info-icon: info-circle !default;
+//$form-info-color: map-get($text-colors, 'light') !default;
+//$form-info-font-size: map-get($font-sizes, 'small') !default;
+//
+//$form-info-tooltip-width: 20px !default;
+//$form-info-tooltip-padding: 0 10px !default;
+//$form-info-tooltip-border-radius: $default-border-radius !default;
+//$form-info-tooltip-color: map-get($text-colors, 'inverse') !default;
+//$form-info-tooltip-background: map-get($colors, 'black') !default;
+//$form-info-tooltip-box-shadow: -8px 0 0  -7px $form-info-tooltip-background,
+//                    -10px 0 0  -8px $form-info-tooltip-background,
+//                    -12px 0 0  -9px $form-info-tooltip-background,
+//                    -14px 0 0 -10px $form-info-tooltip-background,
+//                    -16px 0 0 -11px $form-info-tooltip-background !default;
+//
+//$form-errors-margin: 0 0 0 $form-label-width !default;
+//$form-errors-padding: 0 0 0 20px !default;
+//$form-errors-font-size: map-get($font-sizes, 'small') !default;
+//$form-errors-color: map-get($text-colors, 'error') !default;
+//
+//$form-buttons-margin: rhythm(.5) 0 0 0 !default;
+//
+//
+//.#{$namespace}-form--required {
+//  .#{$namespace}-form__label:not(:empty):first-of-type::after {
+//    content: $form-label-required-content;
+//    margin-left: 2px;
+//    color: $form-label-required-color;
+//  }
+//}
+//
+//
+//.#{$namespace}-form--invalid {
+//  color: $form-invalid-color;
+//
+//  .#{$namespace}-form__label {
+//    color: $form-invalid-color;
+//  }
+//
+//  .#{$namespace}-input,
+//  .#{$namespace}-select,
+//  .#{$namespace}-button,
+//  .#{$namespace}-textarea {
+//    color: $form-invalid-color;
+//    border-color: $form-invalid-border-color;
+//  }
+//}
+//
+//
+//.#{$namespace}-form__info {
+//  @include icon($form-info-icon);
+//
+//  color: $form-info-color;
+//  font-size: $form-info-font-size;
+//  //margin-left: $form-field-spacing;
+//
+//  &::before {
+//    margin-right: 4px;
+//  }
+//
+//  &[role='tooltip'] {
+//    position: relative;
+//    width: $form-info-tooltip-width;
+//    text-indent: -9999px;
+//
+//    &::before {
+//      position: absolute;
+//      left: 0;
+//      text-indent: 0;
+//      cursor: help;
+//    }
+//
+//    &::after {
+//      position: absolute;
+//      left: 100%;
+//      top: 0;
+//      padding: $form-info-tooltip-padding;
+//      white-space: nowrap;
+//      border-radius: $form-info-tooltip-border-radius;
+//    }
+//
+//    &:hover::after {
+//      @include fade-in;
+//
+//      content: attr(aria-label);
+//      display: block;
+//      text-indent: 0;
+//      z-index: 10;
+//      color: $form-info-tooltip-color;
+//      background-color: $form-info-tooltip-background;
+//      box-shadow: $form-info-tooltip-box-shadow;
+//    }
+//  }
+//}
+//
+//
+//.#{$namespace}-form__errors {
+//  margin: $form-errors-margin;
+//  padding: $form-errors-padding;
+//  color: $form-errors-color;
+//  font-size: $form-errors-font-size;
+//  width: 100%;
+//}
+//
+//
+//.#{$namespace}-form__buttons {
+//  display: flex;
+//  align-items: center;
+//  justify-content: flex-end;
+//  margin: $form-buttons-margin;
+//
+//  .#{$namespace}-button {
+//    margin-right: $form-input-spacing;
+//
+//    &:last-child {
+//      margin-right: 0;
+//    }
+//  }
+//  //padding-left: calc(#{$form-label-width} + #{$form-field-spacing});
+//}

@@ -1,0 +1,15 @@
+{
+  "signIn": "登录",
+  "noInvoiceData": "没有交易记录",
+  "copyClipboard": "将地址复制到剪切板",
+  "totalBalance": "总余额",
+  "numberOfAddresses": "地址数量",
+  "address": "地址",
+  "mnemonic_text": "请按照正确的顺序输入您的12个助记词，以便访问您的钱包。",
+  "mnemonic_invalid": "输入的助记词无效。",
+  "validatorsRequired": "必填项",
+  "english": "English",
+  "russian": "Русский",
+  "chinese": "中文",
+  "korean": "한국어"
+}

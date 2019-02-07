@@ -1,0 +1,115 @@
+$notification-min-height: rhythm(3) !default;
+$notification-margin: 0 !default;
+$notification-padding: rhythm(1) !default;
+$notification-font-weight: 400 !default;
+$notification-color: map-get($text-colors, 'light') !default;
+$notification-background: map-get($background-colors, 'body') !default;
+$notification-shadow: 0 2px 10px 0 rgba(0, 0, 0, .1) !default;
+$notification-transition: opacity .15s linear !default;
+$notification-border: none !default;
+
+$notification-icons: (
+  info: svg-url('<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.584 0 0 3.584 0 8s3.584 8 8 8 8-3.584 8-8-3.584-8-8-8zm.8 12H7.2V7.2h1.6V12zm0-6.4H7.2V4h1.6v1.6z" fill="#22243B" fill-rule="nonzero"/></svg>'),
+  error: svg-url('<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm9.315 2.718a.993.993 0 0 0 1.403-1.403L9.41 8.007l1.308-1.309a.993.993 0 0 0-1.403-1.403L8.007 6.603 6.694 5.291a.991.991 0 1 0-1.403 1.403l1.312 1.312-1.312 1.313a.991.991 0 1 0 1.403 1.403L8.007 9.41l1.308 1.308z" fill="#22243B" fill-rule="evenodd"/></svg>'),
+  success: svg-url('<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm-.56 11.01l4.07-4.07a.999.999 0 1 0-1.414-1.415L6.732 8.89l-.829-.829A1 1 0 0 0 4.49 9.475l1.536 1.535a.999.999 0 0 0 1.414 0z" fill="#22243B" fill-rule="evenodd"/></svg>'),
+  warning: svg-url('<svg width="14" height="11" xmlns="http://www.w3.org/2000/svg"><path d="M1.734 11H12.16a1 1 0 0 0 .866-1.501L7.813.495a1 1 0 0 0-1.731 0L.869 9.499A1 1 0 0 0 1.734 11zM7.58 9.105H6.316V7.842h1.263v1.263zm0-2.526H6.316V4.053h1.263v2.526z" fill="#22243B"/></svg>'),
+  close: svg-url('<svg viewBox="0 0 10 10" width="10" height="10" xmlns="http://www.w3.org/2000/svg"><path d="M8.993 0L5 3.993 1.007 0 0 1.007 3.993 5 0 8.993 1.007 10 5 6.007 8.993 10 10 8.993 6.007 5 10 1.007z" fill="#22243B" fill-rule="evenodd"/></svg>'),
+) !default;
+
+$notification-icon-configuration: (
+  pseudo: true,
+  cover: false,
+  size: normal,
+  margin: 1em,
+  side: left,
+) !default;
+
+$notification-close-configuration: (
+  pseudo: true,
+  cover: true,
+  size: tiny,
+) !default;
+
+
+@mixin coloured-notification($type) {
+  @include icon(map-get($notification-icons, $type), $notification-icon-configuration);
+
+  border-color: map-get($border-colors, $type);
+}
+
+
+.#{$namespace}-notification {
+  @include set-border($notification-border, $notification-padding);
+
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  min-height: $notification-min-height;
+  margin: $notification-margin;
+  text-align: left;
+  font-weight: $notification-font-weight;
+  color: $notification-color;
+  background-color: $notification-background;
+  box-shadow: $notification-shadow;
+  opacity: 0;
+
+  &[aria-hidden='true'] {
+    @include fade-out;
+  }
+
+  &[aria-hidden='false'] {
+    @include fade-in;
+  }
+
+
+  // icon
+  &::before {
+    flex: 0 0 auto;
+  }
+
+
+  &__message {
+    flex: 1 1 auto;
+
+    .#{$namespace}-pill,
+    .#{$namespace}-button {
+      margin-left: 1em;
+      margin-right: 1em;
+    }
+
+    > p:only-child {
+      margin: 0;
+    }
+  }
+
+
+  &__close {
+    @include icon(map-get($notification-icons, close), $notification-close-configuration);
+
+    flex: 0 0 auto;
+    margin: 0 0 0 1em;
+  }
+}
+
+
+.#{$namespace}-notification--wide,
+.#{$namespace}-notification--full {
+  width: 100%;
+}
+
+
+.#{$namespace}-notification--success {
+  @include coloured-notification('success');
+}
+
+.#{$namespace}-notification--warning {
+  @include coloured-notification('warning');
+}
+
+.#{$namespace}-notification--error {
+  @include coloured-notification('error');
+}
+
+.#{$namespace}-notification--info {
+  @include coloured-notification('info');
+}

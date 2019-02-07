@@ -1,0 +1,363 @@
+$modal-backdrop-background: (
+  color: rgba(0,0,0,0.2),
+  image: radial-gradient(circle, rgba(46,50,53,0.35) 0%, rgba(0,0,0,0.6) 100%),
+) !default;
+
+$modal-sizes: (
+  small: 400px,
+  medium: 500px,
+  large: 600px
+) !default;
+$modal-margin: 0 !default;
+$modal-padding: (rhythm(1.5) rhythm(1.5) rhythm(1.5) rhythm(1.5)) !default; // please specify all four padding parameters
+$modal-spacing: rhythm(1.5) !default;
+$modal-border: (
+  width: 1px,
+  style: solid,
+  color: transparent,
+  radius: $default-border-radius
+) !default;
+$modal-background: (
+  color: map-get($background-colors, 'window'),
+  clip: padding-box,
+) !default;
+$modal-shadow: 0 2px 6px 0 rgba(0,0,0, .3) !default;
+$modal-transition: all .3s ease-out !default;
+
+$modal-header-height: rhythm(2.5) !default;
+$modal-header-padding: rhythm(1) nth($modal-padding, 2) 0 nth($modal-padding, 4) !default;
+$modal-header-background: (
+  color: map-get($background-colors, 'normal'),
+) !default;
+
+$modal-footer-height: rhythm(2.5) !default;
+$modal-footer-padding: 0 nth($modal-padding, 2) nth($modal-padding, 3) nth($modal-padding, 4) !default;
+$modal-footer-background: none !default;
+
+$modal-title-margin: 0 0 rhythm(1) 0 !default;
+$modal-title-font-size: map-get($font-sizes, 'h4') !default;
+$modal-title-font-weight: normal !default;
+
+$modal-close: (
+  size: rhythm(1),
+  top: rhythm(1),
+  right: rhythm(1),
+  icon: (
+    image: svg-url('<svg width="10" height="10" fill="#{color('tertiary')}" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg"><path d="M8.993 0L5 3.993 1.007 0 0 1.007 3.993 5 0 8.993 1.007 10 5 6.007 8.993 10 10 8.993 6.007 5 10 1.007z"/></svg>'),
+    size: 12px,
+    repeat: no-repeat,
+    position: center center
+  )
+) !default;
+
+$modal-backdrop-z-index: 1040 !default;
+$modal-z-index: 1050 !default;
+
+$modal-full-size: calc(100% - #{$modal-spacing}) !default;
+
+
+@mixin modal-backdrop-transition() {
+  &.fade {
+    opacity: 0;
+    transition: opacity .15s linear;
+
+    &.in {
+      opacity: 1;
+    }
+  }
+}
+
+
+@mixin modal-transition() {
+  &.fade {
+    opacity: 0;
+    transition: $modal-transition;
+
+    &.in {
+      opacity: 1;
+    }
+  }
+}
+
+
+/// Modal body helper class
+
+body.modal-open {
+  overflow: hidden;
+
+  .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+
+/// Modal backdrop
+
+.#{$namespace}-modal__backdrop {
+  @include set-background($modal-backdrop-background);
+  @include modal-backdrop-transition;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $modal-backdrop-z-index;
+}
+
+
+/// Modal wrapper
+
+.#{$namespace}-modal {
+  @include modal-transition;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $modal-z-index;
+  outline: 0;
+  overflow: hidden;
+  will-change: transform;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+/// Modal
+
+.#{$namespace}-modal__dialog {
+  position: relative;
+  margin: $modal-margin;
+  transition: $modal-transition;
+}
+
+
+/// Modal content holder
+
+.#{$namespace}-modal-content,
+.#{$namespace}-modal__content {
+  @include set-border($modal-border);
+  @include set-background($modal-background);
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  outline: 0;
+  box-shadow: $modal-shadow;
+
+  > :first-child {
+    border-top-left-radius: $default-border-radius;
+    border-top-right-radius: $default-border-radius;
+  }
+
+  > :last-child {
+    border-bottom-left-radius: $default-border-radius;
+    border-bottom-right-radius: $default-border-radius;
+  }
+}
+
+
+/// Modal header
+
+.#{$namespace}-modal__header {
+  @include set-background($modal-header-background);
+
+  flex: 0 0 auto;
+  max-height: $modal-header-height;
+  padding: $modal-header-padding;
+  text-align: left;
+  border-radius: $default-border-radius $default-border-radius 0 0;
+
+  &:empty {
+    display: none;
+  }
+
+  /// Close button
+
+  .close {
+    @extend .#{$namespace}-modal__close;
+  }
+}
+
+
+/// Modal title
+
+.#{$namespace}-modal__title {
+  @extend .#{$namespace}-heading;
+
+  margin: $modal-title-margin;
+  font-size: $modal-title-font-size;
+  font-weight: $modal-title-font-weight;
+}
+
+
+.#{$namespace}-modal__close {
+  position: absolute;
+  width: map-get($modal-close, size);
+  height: map-get($modal-close, size);
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: -9999px;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+
+  $icon: if(map-has-key($modal-close, icon), map-get($modal-close, icon), false);
+
+  @if $icon != false {
+    //@include icon(map-get($icon, src), map-get($icon, options));
+    @include set-background(map-get($modal-close, icon));
+  }
+
+  @if map-has-key($modal-close, top) {
+    top: map-get($modal-close, top);
+  }
+
+  @if map-has-key($modal-close, right) {
+    right: map-get($modal-close, right);
+  }
+
+  @if map-has-key($modal-close, bottom) {
+    bottom: map-get($modal-close, bottom);
+  }
+
+  @if map-has-key($modal-close, left) {
+    left: map-get($modal-close, left);
+  }
+
+  &:focus {
+    @include focus(null);
+  }
+
+  &:hover,
+  &:active {
+    @include set-background(map-get($modal-close, icon));
+  }
+}
+
+
+/// Modal body
+
+.#{$namespace}-modal__body {
+  flex: 1 1 auto;
+  padding: $modal-padding;
+  text-align: left;
+
+  .#{$namespace}-modal__footer {
+    margin: #{nth($modal-padding, 1)} -#{nth($modal-padding, 2)} -#{nth($modal-padding, 3)} -#{nth($modal-padding, 4)};
+  }
+}
+
+
+/// Modal footer
+
+.#{$namespace}-modal__footer {
+  @include set-background($modal-footer-background);
+
+  flex: 0 0 auto;
+  height: $modal-footer-height;
+  padding: $modal-footer-padding;
+  border-radius: 0 0 $default-border-radius $default-border-radius;
+
+  &:empty {
+    display: none;
+  }
+
+  &--center {
+    text-align: center;
+  }
+
+  .#{$namespace}-button-group {
+    height: 100%;
+  }
+}
+
+
+/// Modal types
+
+.#{$namespace}-modal--compact {
+  padding: 0;
+  overflow: hidden;
+}
+
+
+/// Modal vertical positioning
+
+.#{$namespace}-modal--top {
+  top: 0;
+  transform: translateY($modal-spacing);
+}
+
+.#{$namespace}-modal--bottom {
+  bottom: -100%;
+  transform: translateY(calc(-100% - #{$modal-spacing}));
+}
+
+.#{$namespace}-modal--middle {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+/// Modal content alignment
+
+.#{$namespace}-modal--left {
+  text-align: left;
+}
+
+.#{$namespace}-modal--right {
+  text-align: right;
+}
+
+.#{$namespace}-modal--center {
+  text-align: center;
+}
+
+//.#{$namespace}-modal--center.#{$namespace}-modal--middle {
+//  top: 50%;
+//  left: 50%;
+//  transform: translate(-50%, -50%);
+//}
+
+
+/// Modal sizes
+
+.#{$namespace}-modal--small {
+  width: map-get($modal-sizes, small);
+}
+
+.#{$namespace}-modal--medium {
+  width: map-get($modal-sizes, medium);
+}
+
+.#{$namespace}-modal--large {
+  width: map-get($modal-sizes, large);
+}
+
+.#{$namespace}-modal--auto {
+  display: inline-block;
+  width: auto;
+  height: auto;
+
+  .#{$namespace}-modal-content,
+  .#{$namespace}-modal__content {
+    width: auto;
+    height: auto;
+  }
+}
+
+.#{$namespace}-modal--full {
+  top: 0;
+  left: 0;
+  width: $modal-full-size;
+  height: $modal-full-size;
+  margin: $modal-spacing / 2;
+  transform: none;
+}

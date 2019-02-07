@@ -1,0 +1,18 @@
+$html-link-margin: 0;
+$html-link-padding: 0;
+$html-link-font-family: $ui-font-family;
+$html-link-font-size: inherit;
+$html-link-font-weight: normal !default;
+$html-link-color: map-get($text-colors, link);
+$html-link-background: transparent;
+$html-link-text-decoration: none;
+$html-link-hover-color: map-get($text-colors, default);
+$html-link-hover-text-decoration: none;
+$html-link-border: none;
+$html-link-hover-border: none;
+$html-link-hover-box-shadow: 0 2px 0 0 map-get($text-colors, link);
+$html-link-external-icon: url('data:image/svg+xml,<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><path d="M6.111 0v1.111h1.995L2.644 6.572l.784.784 5.46-5.462V3.89H10V0H6.111zM8.89 8.889H1.11V1.11H5V0H1.111C.494 0 0 .5 0 1.111V8.89C0 9.503.497 10 1.111 10H8.89C9.503 10 10 9.503 10 8.889V5H8.889v3.889z" fill="#FFF" fill-rule="nonzero" opacity=".2"/></svg>');
+$html-link-alt-color: map-get($text-colors, inverse);
+$html-link-alt-text-decoration: underline;
+
+$html-link-large-font-size: map-get($font-sizes, large);
